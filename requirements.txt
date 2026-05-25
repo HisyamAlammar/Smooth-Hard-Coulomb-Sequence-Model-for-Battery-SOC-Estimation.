@@ -1,0 +1,14 @@
+numpy==1.26.4
+pandas==2.2.2
+matplotlib==3.9.0
+scipy==1.13.1
+torch>=2.0.0
+torchinfo>=1.8.0
+optuna==3.6.1
+scikit-learn==1.5.0
+jupyter==1.0.0
+ipykernel==6.29.4
+seaborn==0.13.2
+tqdm==4.66.4
+streamlit>=1.35.0
+plotly>=5.22.0

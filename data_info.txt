@@ -1,0 +1,41 @@
+v4_scenario_A
+  target format: sequence-to-sequence SOC, y shape=(N, 100), not (N, 1)
+  X_max.npy shape=(1, 1, 5) dtype=float32
+  X_min.npy shape=(1, 1, 5) dtype=float32
+  X_train.npy shape=(15641, 100, 5) dtype=float32
+  y_train.npy shape=(15641, 100) dtype=float32
+  I_unscaled_train.npy shape=(15641, 100) dtype=float32
+  timestamp_ns_train.npy shape=(15641, 100) dtype=int64
+  timestamp_key_train.npy shape=(15641, 100) dtype=int64
+  X_val.npy shape=(9084, 100, 5) dtype=float32
+  y_val.npy shape=(9084, 100) dtype=float32
+  I_unscaled_val.npy shape=(9084, 100) dtype=float32
+  timestamp_ns_val.npy shape=(9084, 100) dtype=int64
+  timestamp_key_val.npy shape=(9084, 100) dtype=int64
+  X_test.npy shape=(18914, 100, 5) dtype=float32
+  y_test.npy shape=(18914, 100) dtype=float32
+  I_unscaled_test.npy shape=(18914, 100) dtype=float32
+  timestamp_ns_test.npy shape=(18914, 100) dtype=int64
+  timestamp_key_test.npy shape=(18914, 100) dtype=int64
+  temp_labels_test.npy shape=(18914,) dtype=<U7
+
+v4_scenario_B
+  target format: sequence-to-sequence SOC, y shape=(N, 100), not (N, 1)
+  X_max.npy shape=(1, 1, 5) dtype=float32
+  X_min.npy shape=(1, 1, 5) dtype=float32
+  X_train.npy shape=(30457, 100, 5) dtype=float32
+  y_train.npy shape=(30457, 100) dtype=float32
+  I_unscaled_train.npy shape=(30457, 100) dtype=float32
+  timestamp_ns_train.npy shape=(30457, 100) dtype=int64
+  timestamp_key_train.npy shape=(30457, 100) dtype=int64
+  X_val.npy shape=(3538, 100, 5) dtype=float32
+  y_val.npy shape=(3538, 100) dtype=float32
+  I_unscaled_val.npy shape=(3538, 100) dtype=float32
+  timestamp_ns_val.npy shape=(3538, 100) dtype=int64
+  timestamp_key_val.npy shape=(3538, 100) dtype=int64
+  X_test.npy shape=(8010, 100, 5) dtype=float32
+  y_test.npy shape=(8010, 100) dtype=float32
+  I_unscaled_test.npy shape=(8010, 100) dtype=float32
+  timestamp_ns_test.npy shape=(8010, 100) dtype=int64
+  timestamp_key_test.npy shape=(8010, 100) dtype=int64
+  temp_labels_test.npy shape=(8010,) dtype=<U7
