@@ -116,7 +116,8 @@ def raw_anchor_prediction(model: torch.nn.Module, X_batch: torch.Tensor) -> torc
     if not hasattr(model, "lstm") or not hasattr(model, "anchor_head"):
         return None
     hidden, _ = model.lstm(X_batch)
-    return model.anchor_head(hidden[:, 0, :]).squeeze(-1)
+    anchor_logit = model.anchor_head(hidden[:, 0, :])
+    return torch.sigmoid(anchor_logit).squeeze(-1)
 
 
 def predict_hard_coulomb(
@@ -271,7 +272,7 @@ def print_anchor_report(result: Dict[str, Any]) -> None:
 
 def print_eta_table(rows: List[Dict[str, float | int]]) -> None:
     print("\n  Scenario B safety-factor eta ablation")
-    print("  Note: eta changes the Coulomb magnitude envelope only; direction PVR remains structurally clamped.")
+    print("  Note: eta changes the Coulomb magnitude envelope only; direction PVR remains structurally routed.")
     print("  " + "-" * 78)
     print("  Eta | RMSE (%) | MAE (%) | MaxE (%) | PVR (%) | Violations / Discharge Steps")
     print("  " + "-" * 78)

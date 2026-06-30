@@ -259,36 +259,36 @@ def model_forward_with_audit(
 
     with torch.no_grad():
         hidden, _ = model.lstm(X_tensor)
-        delta_raw = model.delta_head(hidden)
+        delta_logits = model.delta_head(hidden)
         context_embedding = model.anchor_ctx_encoder(A_tensor)
         anchor_input = torch.cat([hidden[:, 0, :], context_embedding], dim=-1)
-        soc_anchor = model.anchor_head(anchor_input)
-        y_pred = model.hard_constraint(delta_raw, I_tensor, soc_anchor)
+        anchor_logit = model.anchor_head(anchor_input)
+        y_pred, delta_bound = model.hard_constraint(delta_logits, I_tensor, anchor_logit)
 
     pred = y_pred.detach().cpu().numpy().squeeze(0).squeeze(-1)
-    raw_delta = delta_raw.detach().cpu().numpy().squeeze(0).squeeze(-1)
-    anchor = float(soc_anchor.detach().cpu().numpy().squeeze())
+    delta_bound_np = delta_bound.detach().cpu().numpy().squeeze(0).squeeze(-1)
+    anchor = float(y_pred[:, 0, :].detach().cpu().numpy().squeeze())
 
     delta_pred = pred[1:] - pred[:-1]
     discharge_mask = current[1:] < DISCHARGE_THRESHOLD_A
     violations = (delta_pred > 1e-8) & discharge_mask
-
-    raw_discharge_mask = current < DISCHARGE_THRESHOLD_A
-    raw_illegal = (raw_delta > 0.0) & raw_discharge_mask
+    routed_mask = np.abs(current) > abs(DISCHARGE_THRESHOLD_A)
 
     discharge_steps = int(discharge_mask.sum())
     violation_count = int(violations.sum())
-    raw_illegal_count = int(raw_illegal.sum())
+    routed_count = int(routed_mask.sum())
     pvr_pct = 0.0 if discharge_steps == 0 else violation_count / discharge_steps * 100.0
 
     return {
         "pred": pred,
-        "raw_delta": raw_delta,
+        "delta_bound": delta_bound_np,
+        "raw_delta": delta_bound_np,
         "anchor": anchor,
         "pvr_pct": pvr_pct,
         "violations": violation_count,
         "discharge_steps": discharge_steps,
-        "prevented": raw_illegal_count,
+        "routed": routed_count,
+        "prevented": 0,
     }
 
 
@@ -484,7 +484,7 @@ def main() -> None:
         f"{audit['violations']:,}/{audit['discharge_steps']:,} violations",
     )
 
-    st.info(f"Hard-Coulomb bounds prevented {audit['prevented']:,} illegal state transitions.")
+    st.info(f"Smooth Hard-Coulomb routing constrained {audit['routed']:,} active-current steps with zero illegal sign freedom.")
 
     with st.expander("Technical details"):
         st.write(

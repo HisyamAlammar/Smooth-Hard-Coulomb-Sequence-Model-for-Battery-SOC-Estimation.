@@ -570,8 +570,8 @@ def model_forward_with_audit(
     """
     Run the full forward pass and produce a detailed physics safety audit.
 
-    Returns predicted SOC, raw deltas, anchor value, PVR, violation counts,
-    and the number of illegal transitions prevented by the Hard-Coulomb layer.
+    Returns predicted SOC, bounded deltas, anchor value, PVR, violation counts,
+    and the number of active-current steps routed by the Hard-Coulomb layer.
     """
     X_tensor = torch.from_numpy(X_scaled[None, :, :]).to(DEVICE)
     I_tensor = torch.from_numpy(current[None, :]).to(DEVICE)
@@ -579,36 +579,36 @@ def model_forward_with_audit(
 
     with torch.no_grad():
         hidden, _ = model.lstm(X_tensor)
-        delta_raw = model.delta_head(hidden)
+        delta_logits = model.delta_head(hidden)
         context_embedding = model.anchor_ctx_encoder(A_tensor)
         anchor_input = torch.cat([hidden[:, 0, :], context_embedding], dim=-1)
-        soc_anchor = model.anchor_head(anchor_input)
-        y_pred = model.hard_constraint(delta_raw, I_tensor, soc_anchor)
+        anchor_logit = model.anchor_head(anchor_input)
+        y_pred, delta_bound = model.hard_constraint(delta_logits, I_tensor, anchor_logit)
 
     pred = y_pred.detach().cpu().numpy().squeeze(0).squeeze(-1)
-    raw_delta = delta_raw.detach().cpu().numpy().squeeze(0).squeeze(-1)
-    anchor = float(soc_anchor.detach().cpu().numpy().squeeze())
+    delta_bound_np = delta_bound.detach().cpu().numpy().squeeze(0).squeeze(-1)
+    anchor = float(y_pred[:, 0, :].detach().cpu().numpy().squeeze())
 
     delta_pred = pred[1:] - pred[:-1]
     discharge_mask = current[1:] < DISCHARGE_THRESHOLD_A
     violations = (delta_pred > 1e-8) & discharge_mask
-
-    raw_discharge_mask = current < DISCHARGE_THRESHOLD_A
-    raw_illegal = (raw_delta > 0.0) & raw_discharge_mask
+    routed_mask = np.abs(current) > abs(DISCHARGE_THRESHOLD_A)
 
     discharge_steps = int(discharge_mask.sum())
     violation_count = int(violations.sum())
-    raw_illegal_count = int(raw_illegal.sum())
+    routed_count = int(routed_mask.sum())
     pvr_pct = 0.0 if discharge_steps == 0 else violation_count / discharge_steps * 100.0
 
     return {
         "pred": pred,
-        "raw_delta": raw_delta,
+        "delta_bound": delta_bound_np,
+        "raw_delta": delta_bound_np,
         "anchor": anchor,
         "pvr_pct": pvr_pct,
         "violations": violation_count,
         "discharge_steps": discharge_steps,
-        "prevented": raw_illegal_count,
+        "routed": routed_count,
+        "prevented": 0,
     }
 
 
@@ -1007,7 +1007,7 @@ def render_safety_banner(audit: Dict) -> None:
                 SAFETY AUDIT PASSED — Physics Violation Rate: 0.00%
             </div>
             <div class="safety-pass-detail">
-                Hard-Coulomb layer prevented {audit['prevented']:,} illegal state transitions
+                Smooth Hard-Coulomb routing constrained {audit['routed']:,} active-current steps
                 across {audit['discharge_steps']:,} discharge timesteps.
                 Post-constraint violations: {audit['violations']:,} (structurally zero).
             </div>
@@ -1071,7 +1071,7 @@ def main() -> None:
         st.caption(f"**Checkpoint:** `{checkpoint_label}`")
         st.caption(f"**Device:** `{DEVICE}`")
         st.caption(f"**Architecture:** Contextual Hard-Coulomb LSTM")
-        st.caption(f"**Constraint:** HardCoulombConstraint (PVR=0%)")
+        st.caption(f"**Constraint:** SmoothHardCoulombConstraint (PVR=0%)")
 
         st.markdown("---")
         st.markdown("##### 📐 Physics Constants")
@@ -1234,7 +1234,7 @@ def main() -> None:
         |:--|:--|
         | **Physics Violation Rate** | **0.00%** ✅ |
         | **Post-Constraint Violations** | {audit['violations']:,} / {audit['discharge_steps']:,} |
-        | **Raw Illegal Transitions** | {audit['prevented']:,} (prevented) |
+        | **Routed Active-Current Steps** | {audit['routed']:,} |
         | **RMSE** | {metrics['rmse_pct']:.4f}% |
         | **MaxE (Worst-case)** | {metrics['maxe_pct']:.4f}% |
         | **MAE** | {metrics['mae_pct']:.4f}% |
@@ -1260,7 +1260,7 @@ def main() -> None:
                 "num_layers": config_info.get("num_layers", 2),
                 "safety_factor": config_info.get("safety_factor", 1.5),
                 "q_nominal_Ah": 3.0,
-                "constraint": "HardCoulombConstraint",
+                "constraint": "SmoothHardCoulombConstraint",
                 "pvr_rule": "SOC increase while I < -0.05 A",
                 "device": str(DEVICE),
             })

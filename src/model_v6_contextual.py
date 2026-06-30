@@ -14,7 +14,7 @@ import torch
 import torch.nn as nn
 
 from config import NUM_INPUTS, Q_NOMINAL
-from model_v5_coulomb import HardCoulombConstraint
+from model_v5_coulomb import SmoothHardCoulombConstraint
 
 for _stream in (sys.stdout, sys.stderr):
     try:
@@ -76,10 +76,9 @@ class ContextualHardCoulombLSTM(nn.Module):
             nn.Linear(hidden_size + 32, 32),
             nn.ReLU(),
             nn.Linear(32, 1),
-            nn.Sigmoid(),
         )
 
-        self.hard_constraint = HardCoulombConstraint(
+        self.hard_constraint = SmoothHardCoulombConstraint(
             q_nominal=q_nominal,
             safety_factor=safety_factor,
         )
@@ -104,6 +103,11 @@ class ContextualHardCoulombLSTM(nn.Module):
                     if layer.bias is not None:
                         nn.init.zeros_(layer.bias)
 
+        nn.init.normal_(self.delta_head[-1].weight, mean=0.0, std=1e-3)
+        nn.init.zeros_(self.delta_head[-1].bias)
+        nn.init.normal_(self.anchor_head[-1].weight, mean=0.0, std=1e-3)
+        nn.init.zeros_(self.anchor_head[-1].bias)
+
     def forward(
         self,
         x_seq: torch.Tensor,
@@ -111,13 +115,14 @@ class ContextualHardCoulombLSTM(nn.Module):
         anchor_ctx: torch.Tensor,
     ) -> torch.Tensor:
         hidden, _ = self.lstm(x_seq)
-        delta_soc_raw = self.delta_head(hidden)
+        delta_logits = self.delta_head(hidden)
 
         context_embedding = self.anchor_ctx_encoder(anchor_ctx)
         anchor_input = torch.cat([hidden[:, 0, :], context_embedding], dim=-1)
-        soc_anchor = self.anchor_head(anchor_input)
+        anchor_logit = self.anchor_head(anchor_input)
 
-        return self.hard_constraint(delta_soc_raw, current_seq, soc_anchor)
+        soc_pred, _delta = self.hard_constraint(delta_logits, current_seq, anchor_logit)
+        return soc_pred
 
 
 def count_parameters(model: nn.Module) -> int:

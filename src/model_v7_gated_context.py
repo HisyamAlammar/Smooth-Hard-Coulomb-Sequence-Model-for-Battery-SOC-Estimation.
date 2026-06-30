@@ -23,7 +23,7 @@ import torch
 import torch.nn as nn
 
 from config import NUM_INPUTS, Q_NOMINAL
-from model_v5_coulomb import HardCoulombConstraint
+from model_v5_coulomb import SmoothHardCoulombConstraint
 
 for _stream in (sys.stdout, sys.stderr):
     try:
@@ -98,10 +98,9 @@ class GatedContextualHardCoulombLSTM(nn.Module):
             nn.Linear(hidden_size + ctx_emb_dim, 32),
             nn.ReLU(),
             nn.Linear(32, 1),
-            nn.Sigmoid(),
         )
 
-        self.hard_constraint = HardCoulombConstraint(
+        self.hard_constraint = SmoothHardCoulombConstraint(
             q_nominal=q_nominal,
             safety_factor=safety_factor,
         )
@@ -125,6 +124,11 @@ class GatedContextualHardCoulombLSTM(nn.Module):
                     nn.init.kaiming_normal_(layer.weight, nonlinearity="relu")
                     if layer.bias is not None:
                         nn.init.zeros_(layer.bias)
+
+        nn.init.normal_(self.delta_head[-1].weight, mean=0.0, std=1e-3)
+        nn.init.zeros_(self.delta_head[-1].bias)
+        nn.init.normal_(self.anchor_head[-1].weight, mean=0.0, std=1e-3)
+        nn.init.zeros_(self.anchor_head[-1].bias)
 
         nn.init.xavier_uniform_(self.context_gate.weight)
         nn.init.zeros_(self.context_gate.bias)
@@ -161,15 +165,16 @@ class GatedContextualHardCoulombLSTM(nn.Module):
         return_aux: bool = False,
     ):
         hidden, _ = self.lstm(x_seq)
-        delta_soc_raw = self.delta_head(hidden)
+        delta_logits = self.delta_head(hidden)
 
         final_ctx, aux = self.encode_context(anchor_ctx)
         anchor_input = torch.cat([hidden[:, 0, :], final_ctx], dim=-1)
-        soc_anchor = self.anchor_head(anchor_input)
-        soc_pred = self.hard_constraint(delta_soc_raw, current_seq, soc_anchor)
+        anchor_logit = self.anchor_head(anchor_input)
+        soc_pred, delta = self.hard_constraint(delta_logits, current_seq, anchor_logit)
 
         if return_aux:
-            aux["soc_anchor"] = soc_anchor
+            aux['soc_anchor'] = soc_pred[:, 0, :]
+            aux['delta'] = delta
             return soc_pred, aux
         return soc_pred
 

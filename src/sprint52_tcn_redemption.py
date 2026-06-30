@@ -8,7 +8,7 @@ used for the Sprint 48 LSTM and the Sprint 50 contextual-anchor ablation.
 Milestone 1: clean v4 baseline
   - Train HardCoulombTCN on v4 Scenario A and Scenario B.
   - Replace the TCN module's local constraint with the canonical
-    model_v5_coulomb.HardCoulombConstraint used by the LSTM pipeline.
+    model_v5_coulomb.SmoothHardCoulombConstraint used by the LSTM pipeline.
 
 Milestone 2: contextual history-only anchor
   - Train ContextualHardCoulombTCN on v5_contextual Scenario A.
@@ -56,7 +56,7 @@ from config import (  # noqa: E402
     Q_NOMINAL,
     RANDOM_SEED,
 )
-from model_v5_coulomb import HardCoulombConstraint as CanonicalHardCoulombConstraint  # noqa: E402
+from model_v5_coulomb import SmoothHardCoulombConstraint as CanonicalHardCoulombConstraint  # noqa: E402
 from model_v5_coulomb_tcn import HardCoulombTCN, TemporalBlock  # noqa: E402
 from preprocessing_v5_contextual import ANCHOR_CTX_COLS, HISTORY_CTX_INDICES, OCV_CTX_INDICES  # noqa: E402
 
@@ -170,7 +170,6 @@ class ContextualHardCoulombTCN(nn.Module):
             nn.Linear(num_filters + 32, 32),
             nn.ReLU(),
             nn.Linear(32, 1),
-            nn.Sigmoid(),
         )
 
         self.hard_constraint = CanonicalHardCoulombConstraint(
@@ -188,6 +187,11 @@ class ContextualHardCoulombTCN(nn.Module):
                     if layer.bias is not None:
                         nn.init.zeros_(layer.bias)
 
+        nn.init.normal_(self.delta_head[-1].weight, mean=0.0, std=1e-3)
+        nn.init.zeros_(self.delta_head[-1].bias)
+        nn.init.normal_(self.anchor_head[-1].weight, mean=0.0, std=1e-3)
+        nn.init.zeros_(self.anchor_head[-1].bias)
+
     def forward(
         self,
         x_seq: torch.Tensor,
@@ -195,11 +199,12 @@ class ContextualHardCoulombTCN(nn.Module):
         anchor_ctx: torch.Tensor,
     ) -> torch.Tensor:
         hidden = self.tcn(x_seq.transpose(1, 2)).transpose(1, 2)
-        delta_soc_raw = self.delta_head(hidden)
+        delta_logits = self.delta_head(hidden)
         context_embedding = self.anchor_ctx_encoder(anchor_ctx)
         anchor_input = torch.cat([hidden[:, 0, :], context_embedding], dim=-1)
-        soc_anchor = self.anchor_head(anchor_input)
-        return self.hard_constraint(delta_soc_raw, current_seq, soc_anchor)
+        anchor_logit = self.anchor_head(anchor_input)
+        soc_pred, _delta = self.hard_constraint(delta_logits, current_seq, anchor_logit)
+        return soc_pred
 
 
 def count_parameters(model: nn.Module) -> int:
@@ -502,7 +507,7 @@ def train_model(
     print(f"\nTraining {label}")
     print(f"  Trainable params     : {count_parameters(model):,}")
     print(f"  Receptive field      : {getattr(model, 'receptive_field', 'n/a')} steps")
-    print("  Constraint source    : model_v5_coulomb.HardCoulombConstraint")
+    print("  Constraint source    : model_v5_coulomb.SmoothHardCoulombConstraint")
     print(f"  Safety factor        : {SAFETY_FACTOR}")
 
     for epoch in range(1, epochs + 1):
@@ -847,7 +852,7 @@ def run_clean_milestone(
             "dropout": DROPOUT,
             "dilation_rates": list(DILATION_RATES),
             "safety_factor": SAFETY_FACTOR,
-            "constraint_source": "model_v5_coulomb.HardCoulombConstraint",
+            "constraint_source": "model_v5_coulomb.SmoothHardCoulombConstraint",
         },
     )
     result = evaluate_clean_result(scenario_key, model, data, args.batch_size, device, summary)
@@ -902,7 +907,7 @@ def run_contextual_milestone(args: argparse.Namespace, device: torch.device) -> 
             "dropout": DROPOUT,
             "dilation_rates": list(DILATION_RATES),
             "safety_factor": SAFETY_FACTOR,
-            "constraint_source": "model_v5_coulomb.HardCoulombConstraint",
+            "constraint_source": "model_v5_coulomb.SmoothHardCoulombConstraint",
             "anchor_context_protocol": "history_only",
             "ocv_ctx_indices_zeroed": OCV_CTX_INDICES,
             "history_ctx_indices_retained": HISTORY_CTX_INDICES,

@@ -13,7 +13,8 @@ import torch
 import torch.nn as nn
 from torch.nn.utils.parametrizations import weight_norm
 
-from config import CURRENT_THRESHOLD, Q_NOMINAL
+from config import Q_NOMINAL
+from model_v5_coulomb import SmoothHardCoulombConstraint
 
 
 class Chomp1d(nn.Module):
@@ -69,57 +70,6 @@ class TemporalBlock(nn.Module):
         return self.relu_out(out + res)
 
 
-class HardCoulombConstraint(nn.Module):
-    """Direction and magnitude constrained SOC integration layer.
-
-    The per-step delta magnitude is bounded by Coulomb counting:
-        coulomb_limit = abs(I_t) * gamma_factor
-
-    where gamma_factor = dt / (Q_nominal * 3600) * safety_factor.
-    """
-    def __init__(self, q_nominal: float = Q_NOMINAL,
-                 dt: float = 1.0,
-                 safety_factor: float = 1.5,
-                 threshold: float = CURRENT_THRESHOLD):
-        super().__init__()
-        self.threshold = threshold
-        self.safety_factor = safety_factor
-        self.gamma = dt / (q_nominal * 3600.0)
-        self.gamma_factor = self.gamma * safety_factor
-
-    def forward(self, delta_soc_raw: torch.Tensor,
-                current_seq: torch.Tensor,
-                soc_anchor: torch.Tensor) -> torch.Tensor:
-        """
-        Parameters
-        ----------
-        delta_soc_raw : (B, T, 1) unconstrained delta predictions
-        current_seq   : (B, T)    unscaled current in Amperes
-        soc_anchor    : (B, 1)    initial SOC prediction
-        """
-        I_t = current_seq.unsqueeze(-1)
-        coulomb_limit = torch.abs(I_t) * self.gamma_factor
-
-        discharge_mask = I_t < -self.threshold
-        charge_mask = I_t > self.threshold
-
-        delta_constrained = torch.zeros_like(delta_soc_raw)
-        delta_constrained[discharge_mask] = torch.clamp(
-            delta_soc_raw[discharge_mask],
-            min=-coulomb_limit[discharge_mask],
-            max=torch.zeros_like(coulomb_limit[discharge_mask]),
-        )
-        delta_constrained[charge_mask] = torch.clamp(
-            delta_soc_raw[charge_mask],
-            min=torch.zeros_like(coulomb_limit[charge_mask]),
-            max=coulomb_limit[charge_mask],
-        )
-
-        cumulative = torch.cumsum(delta_constrained, dim=1)
-        soc_pred = soc_anchor.unsqueeze(1) + cumulative
-        return soc_pred.clamp(0.0, 1.0)
-
-
 class HardCoulombTCN(nn.Module):
     """V3 TCN backbone with V5 Hard-Coulomb output constraint."""
     def __init__(self, num_inputs: int = 5, num_filters: int = 64,
@@ -151,20 +101,33 @@ class HardCoulombTCN(nn.Module):
             nn.Linear(num_filters, 16),
             nn.ReLU(),
             nn.Linear(16, 1),
-            nn.Sigmoid(),
         )
 
-        self.hard_constraint = HardCoulombConstraint(
+        self.hard_constraint = SmoothHardCoulombConstraint(
             q_nominal=q_nominal,
             safety_factor=safety_factor,
         )
         self.receptive_field = 1 + 2 * (kernel_size - 1) * sum(dilation_rates)
+        self._init_heads()
+
+    def _init_heads(self) -> None:
+        for module in [self.delta_head, self.anchor_head]:
+            for layer in module:
+                if isinstance(layer, nn.Linear):
+                    nn.init.kaiming_normal_(layer.weight, nonlinearity='relu')
+                    if layer.bias is not None:
+                        nn.init.zeros_(layer.bias)
+        nn.init.normal_(self.delta_head[-1].weight, mean=0.0, std=1e-3)
+        nn.init.zeros_(self.delta_head[-1].bias)
+        nn.init.normal_(self.anchor_head[-1].weight, mean=0.0, std=1e-3)
+        nn.init.zeros_(self.anchor_head[-1].bias)
 
     def forward(self, x: torch.Tensor, current_seq: torch.Tensor) -> torch.Tensor:
         h = self.tcn(x.transpose(1, 2)).transpose(1, 2)
-        delta_soc_raw = self.delta_head(h)
-        soc_anchor = self.anchor_head(h[:, 0, :])
-        return self.hard_constraint(delta_soc_raw, current_seq, soc_anchor)
+        delta_logits = self.delta_head(h)
+        anchor_logit = self.anchor_head(h[:, 0, :])
+        soc_pred, _delta = self.hard_constraint(delta_logits, current_seq, anchor_logit)
+        return soc_pred
 
 
 def count_parameters(model: nn.Module) -> int:
