@@ -40,10 +40,13 @@ Tampilkan:
 - Subtitle: `Functional-safety-oriented SOC estimation with 0.00% Physics Violation Rate`
 - Satu persamaan ringkas:
 
-```text
-SOC_pred(t) = SOC_anchor + cumsum(delta_t)
-PVR = 0.00% by architectural invariant
-```
+$$
+\widehat{\mathrm{SOC}}_t = \widehat{\mathrm{SOC}}_{\mathrm{anchor}} + \sum_{\tau=1}^{t}\Delta \widehat{\mathrm{SOC}}_{\tau}
+$$
+
+$$
+\mathrm{PVR} = 0.00\% \quad \text{by architectural invariant}
+$$
 
 Opsional visual kecil:
 
@@ -77,9 +80,12 @@ Current < 0  ->  Battery discharging  ->  SOC must not increase
 
 Tampilkan definisi PVR:
 
-```text
-PVR = count(delta_SOC_pred > 0 while I < -threshold) / count(I < -threshold)
-```
+$$
+\mathrm{PVR} =
+\frac{\#\{t : \Delta \widehat{\mathrm{SOC}}_t > 0 \land I_t < -I_{\mathrm{th}}\}}
+{\#\{t : I_t < -I_{\mathrm{th}}\}}
+\times 100\%
+$$
 
 Data pendukung dari log final:
 
@@ -217,9 +223,9 @@ Tampilkan:
 
 Rumus ringkas:
 
-```text
-Loss = MSE(data) + lambda * Penalty(physics)
-```
+$$
+\mathcal{L} = \mathrm{MSE}_{\mathrm{data}} + \lambda\,\mathcal{L}_{\mathrm{physics}}
+$$
 
 Angka penting:
 
@@ -292,25 +298,42 @@ Tampilkan diagram alur:
 
 ```text
 Input sequence -> LSTM/TCN backbone -> delta logits + anchor logit
-delta logits -> sigmoid magnitude -> Coulomb envelope -> cumsum
+delta logits -> sigmoid magnitude -> Coulomb envelope -> cumulative update
 anchor logit -> dynamic bound lo/hi -> SOC anchor
-SOC anchor + cumsum(delta) -> SOC sequence
+SOC anchor + cumulative Coulomb increment -> SOC sequence
 ```
 
 Tampilkan equation block:
 
-```text
-limit_t = |I_t| * dt / (Q_nominal * 3600) * eta
-mag_frac_t = sigmoid(delta_logit_t)
+$$
+L_t = |I_t| \cdot \frac{\Delta t}{Q_{\mathrm{nom}} \cdot 3600} \cdot \eta
+$$
 
-if I_t < -threshold: delta_t = -limit_t * mag_frac_t
-if I_t >  threshold: delta_t =  limit_t * mag_frac_t
-else:                 delta_t = 0
+$$
+m_t = \sigma\left(z^{\Delta}_t\right)
+$$
 
-cumulative_t = cumsum(delta_t)
-soc_anchor = lo + width * sigmoid(anchor_logit)
-soc_pred_t = soc_anchor + cumulative_t
-```
+$$
+\Delta \widehat{\mathrm{SOC}}_t =
+\begin{cases}
+-L_t m_t, & I_t < -I_{\mathrm{th}} \\
+\phantom{-}L_t m_t, & I_t > I_{\mathrm{th}} \\
+0, & |I_t| \le I_{\mathrm{th}}
+\end{cases}
+$$
+
+$$
+C_t = \sum_{\tau=1}^{t} \Delta \widehat{\mathrm{SOC}}_{\tau}
+$$
+
+$$
+w = \max(h_i - l_o, \epsilon), \qquad
+\widehat{\mathrm{SOC}}_{\mathrm{anchor}} = l_o + w \cdot \sigma\left(z^{\mathrm{anchor}}\right)
+$$
+
+$$
+\widehat{\mathrm{SOC}}_t = \widehat{\mathrm{SOC}}_{\mathrm{anchor}} + C_t
+$$
 
 Sumber code:
 
@@ -344,12 +367,12 @@ Tampilkan:
 
 Tampilkan angka besar:
 
-```text
-Hard-Coulomb LSTM Scenario A PVR = 0.00%, violations = 0
-Hard-Coulomb LSTM Scenario B PVR = 0.00%, violations = 0
-Hard-Coulomb TCN  Scenario A PVR = 0.00%, violations = 0
-Hard-Coulomb TCN  Scenario B PVR = 0.00%, violations = 0
-```
+| Model | Scenario | $\mathrm{PVR}$ | Jumlah pelanggaran |
+|---|---|---:|---:|
+| Hard-Coulomb LSTM | A | $0.00\%$ | $0$ |
+| Hard-Coulomb LSTM | B | $0.00\%$ | $0$ |
+| Hard-Coulomb TCN | A | $0.00\%$ | $0$ |
+| Hard-Coulomb TCN | B | $0.00\%$ | $0$ |
 
 Sumber:
 
@@ -416,13 +439,13 @@ Tampilkan dua figure:
 
 Equation utama:
 
-```text
-SOC_pred(t) = SOC_anchor + cumsum(delta_t)
-```
+$$
+\widehat{\mathrm{SOC}}_t = \widehat{\mathrm{SOC}}_{\mathrm{anchor}} + \sum_{\tau=1}^{t}\Delta \widehat{\mathrm{SOC}}_{\tau}
+$$
 
 Poin data:
 
-- Safety factor eta sweep tidak menghilangkan MaxE dingin.
+- Safety factor $\eta$ sweep tidak menghilangkan MaxE dingin.
 - OCV-rest-only memperbaiki MaxE dibanding empty context.
 - History-only memperburuk anchor: MaxE `62.1314%`.
 - Gated context gagal karena rest evidence sparse, sekitar `10.38%` valid rest pada -20 C.
@@ -599,7 +622,7 @@ Gunakan ini sebagai transisi antarbagian.
 - [ ] Slide 8 equation tidak terlalu kecil.
 - [ ] Backup slide berisi leakage, V_proxy, gated context, dan JSON ledger.
 - [ ] Siapkan jawaban untuk pertanyaan: "Kenapa tidak EKF/UKF?"
-- [ ] Siapkan jawaban untuk pertanyaan: "Kenapa eta = 1.5?"
+- [ ] Siapkan jawaban untuk pertanyaan: "Kenapa $\eta = 1.5$?"
 - [ ] Siapkan jawaban untuk pertanyaan: "Kenapa MaxE -20 C masih tinggi?"
 - [ ] Siapkan jawaban untuk pertanyaan: "Apakah PVR 0.00% berlaku jika sensor arus bias?"
 
@@ -626,4 +649,3 @@ Karena pada -20 C terminal voltage terdistorsi oleh polarization dan resistance.
 ### Apakah ini siap untuk embedded?
 
 Secara parameter count, LSTM sekitar 54k parameter dan TCN sekitar 208k parameter, sehingga feasible untuk arah TinyML. Tetapi validasi WCET, latency, quantization, dan HIL masih future work.
-
