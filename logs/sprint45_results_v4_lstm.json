@@ -1,0 +1,28 @@
+{
+  "scenario_A": {
+    "scenario": "scenario_A",
+    "rmse_full_pct": "14.680767",
+    "mae_full_pct": "9.945196",
+    "max_error_full_pct": "99.89798",
+    "r2_full": 0.6951563358306885,
+    "rmse_last_pct": "20.75699",
+    "r2_last": 0.39028769731521606,
+    "pvr": 0.0,
+    "pvr_violations": 0,
+    "pvr_discharge_steps": 13177375,
+    "n_samples": 194302
+  },
+  "scenario_B": {
+    "scenario": "scenario_B",
+    "rmse_full_pct": "4.3554664",
+    "mae_full_pct": "2.9996347",
+    "max_error_full_pct": "68.51819",
+    "r2_full": 0.9761948585510254,
+    "rmse_last_pct": "3.9340763",
+    "r2_last": 0.9805725812911987,
+    "pvr": 0.0,
+    "pvr_violations": 0,
+    "pvr_discharge_steps": 5902702,
+    "n_samples": 89844
+  }
+}

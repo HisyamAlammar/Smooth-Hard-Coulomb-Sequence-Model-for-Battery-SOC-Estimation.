@@ -1,0 +1,34 @@
+{
+  "scenario_A": {
+    "scenario": "scenario_A",
+    "model": "v5_coulomb_tcn",
+    "rmse_full_pct": "12.114649",
+    "mae_full_pct": "8.560387",
+    "max_error_full_pct": "79.48047",
+    "r2_full": 0.7924124266049641,
+    "rmse_last_pct": "12.584293",
+    "mae_last_pct": "8.805756",
+    "max_error_last_pct": "79.48047",
+    "r2_last": 0.7758938297074575,
+    "pvr": 0.0,
+    "pvr_violations": 0,
+    "pvr_discharge_steps": 13177375,
+    "n_samples": 194302
+  },
+  "scenario_B": {
+    "scenario": "scenario_B",
+    "model": "v5_coulomb_tcn",
+    "rmse_full_pct": "5.1861563",
+    "mae_full_pct": "3.6573007",
+    "max_error_full_pct": "59.207546",
+    "r2_full": 0.9662485014005957,
+    "rmse_last_pct": "5.405501",
+    "mae_last_pct": "3.7601814",
+    "max_error_last_pct": "59.207546",
+    "r2_last": 0.9633223796658137,
+    "pvr": 0.0,
+    "pvr_violations": 0,
+    "pvr_discharge_steps": 5902702,
+    "n_samples": 89844
+  }
+}

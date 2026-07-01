@@ -103,9 +103,9 @@ class ContextualHardCoulombLSTM(nn.Module):
                     if layer.bias is not None:
                         nn.init.zeros_(layer.bias)
 
-        nn.init.normal_(self.delta_head[-1].weight, mean=0.0, std=1e-3)
+        nn.init.xavier_uniform_(self.delta_head[-1].weight, gain=0.1)
         nn.init.zeros_(self.delta_head[-1].bias)
-        nn.init.normal_(self.anchor_head[-1].weight, mean=0.0, std=1e-3)
+        nn.init.xavier_uniform_(self.anchor_head[-1].weight, gain=0.1)
         nn.init.zeros_(self.anchor_head[-1].bias)
 
     def forward(

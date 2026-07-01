@@ -1,0 +1,154 @@
+{
+  "results": [
+    {
+      "model": "LSTM",
+      "scenario": "Scenario_A",
+      "rmse": "0.12570909",
+      "rmse_pct": "12.570909",
+      "mae": "0.09736665",
+      "mae_pct": "9.736666",
+      "max_error": "0.8174291",
+      "max_error_pct": "81.74291",
+      "r2_full": 0.6751567721366882,
+      "rmse_last_pct": "10.759832",
+      "mae_last_pct": "8.684301",
+      "max_error_last_pct": "41.24356",
+      "r2_last": 0.7617160677909851,
+      "pvr": 50.483758974686246,
+      "n_violations": 1851089,
+      "n_discharge": 3666702,
+      "n_samples": 55092
+    },
+    {
+      "model": "TCN",
+      "scenario": "Scenario_A",
+      "rmse": "0.4984262",
+      "rmse_pct": "49.84262",
+      "mae": "0.4568149",
+      "mae_pct": "45.681488",
+      "max_error": "0.9435183",
+      "max_error_pct": "94.35183",
+      "r2_full": -4.106721878051758,
+      "rmse_last_pct": "53.49906",
+      "mae_last_pct": "50.2866",
+      "max_error_last_pct": "94.32539",
+      "r2_last": -4.8908257484436035,
+      "pvr": 22.117095962529813,
+      "n_violations": 810968,
+      "n_discharge": 3666702,
+      "n_samples": 55092
+    },
+    {
+      "model": "PI-TCN",
+      "scenario": "Scenario_A",
+      "rmse": "0.40992284",
+      "rmse_pct": "40.992283",
+      "mae": "0.37120935",
+      "mae_pct": "37.120934",
+      "max_error": "0.89555967",
+      "max_error_pct": "89.55597",
+      "r2_full": -2.4541780948638916,
+      "rmse_last_pct": "44.853985",
+      "mae_last_pct": "41.773205",
+      "max_error_last_pct": "89.55597",
+      "r2_last": -3.1408157348632812,
+      "pvr": 17.021099614858258,
+      "n_violations": 624113,
+      "n_discharge": 3666702,
+      "n_samples": 55092
+    },
+    {
+      "model": "LSTM",
+      "scenario": "Scenario_B",
+      "rmse": "0.061855514",
+      "rmse_pct": "6.185551",
+      "mae": "0.04743311",
+      "mae_pct": "4.7433114",
+      "max_error": "0.52746975",
+      "max_error_pct": "52.746975",
+      "r2_full": 0.9041329622268677,
+      "rmse_last_pct": "5.310339",
+      "mae_last_pct": "4.155386",
+      "max_error_last_pct": "21.737247",
+      "r2_last": 0.9292596578598022,
+      "pvr": 45.18489065606362,
+      "n_violations": 323874,
+      "n_discharge": 716775,
+      "n_samples": 11019
+    },
+    {
+      "model": "TCN",
+      "scenario": "Scenario_B",
+      "rmse": "0.054831065",
+      "rmse_pct": "5.4831066",
+      "mae": "0.042389218",
+      "mae_pct": "4.2389216",
+      "max_error": "0.5585766",
+      "max_error_pct": "55.85766",
+      "r2_full": 0.9246703386306763,
+      "rmse_last_pct": "4.7050123",
+      "mae_last_pct": "3.7511456",
+      "max_error_last_pct": "18.468475",
+      "r2_last": 0.9444678425788879,
+      "pvr": 50.54640577587109,
+      "n_violations": 362304,
+      "n_discharge": 716775,
+      "n_samples": 11019
+    },
+    {
+      "model": "PI-TCN",
+      "scenario": "Scenario_B",
+      "rmse": "0.06788458",
+      "rmse_pct": "6.788458",
+      "mae": "0.052949693",
+      "mae_pct": "5.294969",
+      "max_error": "0.54948604",
+      "max_error_pct": "54.948605",
+      "r2_full": 0.8845337629318237,
+      "rmse_last_pct": "6.2339053",
+      "mae_last_pct": "4.9102664",
+      "max_error_last_pct": "33.98625",
+      "r2_last": 0.9025137424468994,
+      "pvr": 43.62624254473161,
+      "n_violations": 312702,
+      "n_discharge": 716775,
+      "n_samples": 11019
+    }
+  ],
+  "reproducibility": {
+    "A": [
+      {
+        "seed": 42,
+        "rmse": "40.683372",
+        "pvr": 21.84772583100563
+      },
+      {
+        "seed": 123,
+        "rmse": "23.399328",
+        "pvr": 24.642935258987507
+      },
+      {
+        "seed": 2026,
+        "rmse": "24.572315",
+        "pvr": 19.856672290248838
+      }
+    ],
+    "B": [
+      {
+        "seed": 42,
+        "rmse": "6.960281",
+        "pvr": 53.813818841337934
+      },
+      {
+        "seed": 123,
+        "rmse": "6.915588",
+        "pvr": 38.62244079383349
+      },
+      {
+        "seed": 2026,
+        "rmse": "6.5868855",
+        "pvr": 33.17414809389278
+      }
+    ]
+  }
+}

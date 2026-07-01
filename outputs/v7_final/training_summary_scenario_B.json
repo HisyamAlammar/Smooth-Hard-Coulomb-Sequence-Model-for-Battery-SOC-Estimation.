@@ -1,0 +1,31 @@
+{
+  "scenario": "scenario_B",
+  "data_source": "data\\processed\\v4_scenario_B",
+  "output_dir": "outputs\\v7_final",
+  "parameter_counts": {
+    "vanilla_lstm": 53569,
+    "hard_coulomb_lstm": 54626
+  },
+  "runs": [
+    {
+      "model_kind": "vanilla_lstm",
+      "model_name": "VanillaLSTM",
+      "best_checkpoint": "outputs\\v7_final\\vanilla_lstm_scenario_B.pt",
+      "latest_checkpoint": "outputs\\v7_final\\vanilla_lstm_scenario_B_latest.pt",
+      "log": "outputs\\v7_final\\logs\\training_log_vanilla_lstm_scenario_B.csv",
+      "best_val_loss": 0.0036363209947012365,
+      "epochs_ran": 87,
+      "minutes": 1.44
+    },
+    {
+      "model_kind": "hard_coulomb_lstm",
+      "model_name": "HardCoulombLSTM",
+      "best_checkpoint": "outputs\\v7_final\\hard_coulomb_lstm_scenario_B.pt",
+      "latest_checkpoint": "outputs\\v7_final\\hard_coulomb_lstm_scenario_B_latest.pt",
+      "log": "outputs\\v7_final\\logs\\training_log_hard_coulomb_lstm_scenario_B.csv",
+      "best_val_loss": 0.005069724778877571,
+      "epochs_ran": 30,
+      "minutes": 0.54
+    }
+  ]
+}

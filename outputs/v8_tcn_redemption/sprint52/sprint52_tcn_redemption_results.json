@@ -1,0 +1,195 @@
+{
+  "script": "src/sprint52_tcn_redemption.py",
+  "output_dir": "outputs\\v8_tcn_redemption\\sprint52",
+  "epochs_requested": 100,
+  "batch_size": 1024,
+  "learning_rate": 0.001,
+  "patience": 12,
+  "seed": 42,
+  "dry_run": false,
+  "results": [
+    {
+      "milestone": "clean_v4_baseline",
+      "scenario": "scenario_A",
+      "model": "HardCoulombTCN",
+      "data_branch": "data\\processed\\v4_scenario_A",
+      "parameter_count": 208546,
+      "receptive_field": 181,
+      "training": {
+        "label": "HardCoulombTCN scenario_A",
+        "mode": "clean",
+        "best_val_loss": 0.002741279057873827,
+        "epochs_ran": 43,
+        "checkpoint": "outputs\\v8_tcn_redemption\\sprint52\\hard_coulomb_tcn_scenario_A.pt",
+        "history": "outputs\\v8_tcn_redemption\\sprint52\\hard_coulomb_tcn_scenario_A_history.csv"
+      },
+      "metrics": {
+        "n_windows": 18914,
+        "rmse_full_pct": 11.45868968963623,
+        "mae_full_pct": 8.82960033416748,
+        "maxe_full_pct": 46.72976303100586,
+        "r2_full": 0.818933807266453,
+        "rmse_last_pct": 11.351140975952148,
+        "mae_last_pct": 8.733428001403809,
+        "maxe_last_pct": 45.91998291015625,
+        "t0_rmse_pct": 11.580535888671875,
+        "t0_mae_pct": 8.943538665771484,
+        "t0_maxe_pct": 46.70304870605469,
+        "pvr_pct": 0.0,
+        "pvr_violations": 0,
+        "pvr_discharge_steps": 1293237
+      },
+      "per_temperature_last_step": {
+        "40degC": {
+          "rmse_pct": 6.241057872772217,
+          "mae_pct": 4.701372146606445,
+          "n_windows": 6148
+        },
+        "n10degC": {
+          "rmse_pct": 10.506734848022461,
+          "mae_pct": 8.616578102111816,
+          "n_windows": 7387
+        },
+        "n20degC": {
+          "rmse_pct": 16.02950668334961,
+          "mae_pct": 13.502388954162598,
+          "n_windows": 5379
+        }
+      }
+    },
+    {
+      "milestone": "clean_v4_baseline",
+      "scenario": "scenario_B",
+      "model": "HardCoulombTCN",
+      "data_branch": "data\\processed\\v4_scenario_B",
+      "parameter_count": 208546,
+      "receptive_field": 181,
+      "training": {
+        "label": "HardCoulombTCN scenario_B",
+        "mode": "clean",
+        "best_val_loss": 0.004581198707455769,
+        "epochs_ran": 32,
+        "checkpoint": "outputs\\v8_tcn_redemption\\sprint52\\hard_coulomb_tcn_scenario_B.pt",
+        "history": "outputs\\v8_tcn_redemption\\sprint52\\hard_coulomb_tcn_scenario_B_history.csv"
+      },
+      "metrics": {
+        "n_windows": 8010,
+        "rmse_full_pct": 8.582319259643555,
+        "mae_full_pct": 5.9165940284729,
+        "maxe_full_pct": 39.48639678955078,
+        "r2_full": 0.7515648147856728,
+        "rmse_last_pct": 8.59854793548584,
+        "mae_last_pct": 5.892664909362793,
+        "maxe_last_pct": 39.48639678955078,
+        "t0_rmse_pct": 8.569973945617676,
+        "t0_mae_pct": 5.935360431671143,
+        "t0_maxe_pct": 39.48639678955078,
+        "pvr_pct": 0.0,
+        "pvr_violations": 0,
+        "pvr_discharge_steps": 359309
+      },
+      "per_temperature_last_step": {
+        "0degC": {
+          "rmse_pct": 6.721059322357178,
+          "mae_pct": 5.418378829956055,
+          "n_windows": 1395
+        },
+        "10degC": {
+          "rmse_pct": 4.116698265075684,
+          "mae_pct": 3.016139030456543,
+          "n_windows": 1520
+        },
+        "25degC": {
+          "rmse_pct": 3.1750359535217285,
+          "mae_pct": 2.6119110584259033,
+          "n_windows": 1712
+        },
+        "40degC": {
+          "rmse_pct": 3.8539345264434814,
+          "mae_pct": 2.5938403606414795,
+          "n_windows": 1079
+        },
+        "n10degC": {
+          "rmse_pct": 15.956376075744629,
+          "mae_pct": 13.794832229614258,
+          "n_windows": 1342
+        },
+        "n20degC": {
+          "rmse_pct": 11.556523323059082,
+          "mae_pct": 9.640400886535645,
+          "n_windows": 962
+        }
+      }
+    },
+    {
+      "milestone": "contextual_history_only_v5",
+      "scenario": "scenario_A",
+      "target_temp": "n20degC",
+      "model": "ContextualHardCoulombTCN",
+      "data_branch": "data\\processed\\v5_contextual\\scenario_A",
+      "parameter_count": 211170,
+      "receptive_field": 181,
+      "anchor_context_protocol": {
+        "mode": "history_only",
+        "anchor_ctx_cols": [
+          "ctx_ocv_rest_valid",
+          "ctx_ocv_rest_voltage",
+          "ctx_ocv_rest_age_sec",
+          "ctx_ocv_rest_delta_v",
+          "ctx_hist_valid_60s",
+          "ctx_I_mean_60s",
+          "ctx_I_std_60s",
+          "ctx_I_min_60s",
+          "ctx_I_max_60s",
+          "ctx_abs_I_mean_60s",
+          "ctx_V_mean_60s",
+          "ctx_V_std_60s",
+          "ctx_T_mean_60s",
+          "ctx_charge_throughput_60s"
+        ],
+        "ocv_ctx_indices_zeroed": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "history_ctx_indices_retained": [
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13
+        ]
+      },
+      "training": {
+        "label": "ContextualHardCoulombTCN scenario_A history_only",
+        "mode": "contextual",
+        "best_val_loss": 0.002004844860898124,
+        "epochs_ran": 29,
+        "checkpoint": "outputs\\v8_tcn_redemption\\sprint52\\contextual_history_hard_coulomb_tcn_scenario_A.pt",
+        "history": "outputs\\v8_tcn_redemption\\sprint52\\contextual_history_hard_coulomb_tcn_scenario_A_history.csv"
+      },
+      "metrics": {
+        "n_windows": 5289,
+        "rmse_full_pct": 19.87837791442871,
+        "mae_full_pct": 17.650150299072266,
+        "maxe_full_pct": 47.5307502746582,
+        "r2_full": 0.2215567372828411,
+        "rmse_last_pct": 19.635536193847656,
+        "mae_last_pct": 17.416975021362305,
+        "maxe_last_pct": 47.418067932128906,
+        "t0_rmse_pct": 19.978595733642578,
+        "t0_mae_pct": 17.747316360473633,
+        "t0_maxe_pct": 47.4413948059082,
+        "pvr_pct": 0.0,
+        "pvr_violations": 0,
+        "pvr_discharge_steps": 353499
+      }
+    }
+  ]
+}

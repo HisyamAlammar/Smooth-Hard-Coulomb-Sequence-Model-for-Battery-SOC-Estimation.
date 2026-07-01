@@ -1,0 +1,49 @@
+{
+  "train_source": "scenario_A",
+  "stage1_checkpoint": "outputs\\v7_final\\sprint49_anchor_pretraining\\stage1_anchor_path_scenario_A.pt",
+  "stage2_checkpoint": "outputs\\v7_final\\sprint49_anchor_pretraining\\stage2_hard_coulomb_anchor_frozen_scenario_A.pt",
+  "lstm_warm_start": true,
+  "anchor_head_frozen": true,
+  "stage1_epochs_ran": 1,
+  "stage2_epochs_ran": 1,
+  "evaluation": [
+    {
+      "scenario": "scenario_A",
+      "n_windows": 18914,
+      "rmse_pct": 27.056118845939636,
+      "mae_pct": 23.179790377616882,
+      "maxe_pct": 52.66662240028381,
+      "t0": {
+        "mae_pct": 23.300330105771522,
+        "rmse_pct": 27.22691222804287,
+        "p95_pct": 45.93046098947525,
+        "maxe_pct": 51.71127915382385
+      },
+      "pvr_pct": 0.0,
+      "pvr_violations": 0,
+      "pvr_discharge_steps": 1293237,
+      "sprint48_maxe_baseline_pct": 54.8409,
+      "maxe_delta_vs_sprint48_pct": -2.1742775997161843,
+      "reduced_below_sprint48_maxe": true
+    },
+    {
+      "scenario": "scenario_B",
+      "n_windows": 8010,
+      "rmse_pct": 35.94691455364227,
+      "mae_pct": 34.277695417404175,
+      "maxe_pct": 52.73297429084778,
+      "t0": {
+        "mae_pct": 33.81396732861629,
+        "rmse_pct": 35.495725901144176,
+        "p95_pct": 48.087828159332275,
+        "maxe_pct": 51.77396535873413
+      },
+      "pvr_pct": 0.0,
+      "pvr_violations": 0,
+      "pvr_discharge_steps": 359309,
+      "sprint48_maxe_baseline_pct": 35.4357,
+      "maxe_delta_vs_sprint48_pct": 17.29727429084778,
+      "reduced_below_sprint48_maxe": false
+    }
+  ]
+}

@@ -1,0 +1,122 @@
+{
+  "data_branch": "data\\processed\\v5_contextual\\scenario_A",
+  "target_temp": "n20degC",
+  "anchor_ctx_cols": [
+    "ctx_ocv_rest_valid",
+    "ctx_ocv_rest_voltage",
+    "ctx_ocv_rest_age_sec",
+    "ctx_ocv_rest_delta_v",
+    "ctx_hist_valid_60s",
+    "ctx_I_mean_60s",
+    "ctx_I_std_60s",
+    "ctx_I_min_60s",
+    "ctx_I_max_60s",
+    "ctx_abs_I_mean_60s",
+    "ctx_V_mean_60s",
+    "ctx_V_std_60s",
+    "ctx_T_mean_60s",
+    "ctx_charge_throughput_60s"
+  ],
+  "ocv_ctx_indices": [
+    0,
+    1,
+    2,
+    3
+  ],
+  "history_ctx_indices": [
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13
+  ],
+  "summaries": [
+    {
+      "ablation": "empty_anchor_ctx",
+      "label": "HC-LSTM Empty Anchor Ctx",
+      "best_val_loss": 0.0035760216673629153,
+      "epochs_ran": 43,
+      "checkpoint": "outputs\\v5_contextual\\sprint50_contextual\\empty_anchor_ctx.pt"
+    },
+    {
+      "ablation": "ocv_rest_only",
+      "label": "+OCV-rest only",
+      "best_val_loss": 0.0035706366567562022,
+      "epochs_ran": 22,
+      "checkpoint": "outputs\\v5_contextual\\sprint50_contextual\\ocv_rest_only.pt"
+    },
+    {
+      "ablation": "history_only",
+      "label": "+History only",
+      "best_val_loss": 0.0037954587153055603,
+      "epochs_ran": 43,
+      "checkpoint": "outputs\\v5_contextual\\sprint50_contextual\\history_only.pt"
+    },
+    {
+      "ablation": "full_context",
+      "label": "+OCV-rest + History",
+      "best_val_loss": 0.003219825404812582,
+      "epochs_ran": 27,
+      "checkpoint": "outputs\\v5_contextual\\sprint50_contextual\\full_context.pt"
+    }
+  ],
+  "scientific_test": [
+    {
+      "ablation": "empty_anchor_ctx",
+      "label": "HC-LSTM Empty Anchor Ctx",
+      "target_temp": "n20degC",
+      "n_windows": 5289,
+      "t0_rmse_pct": 17.28445816040039,
+      "t0_maxe_pct": 52.50889205932617,
+      "full_rmse_pct": 17.09089469909668,
+      "full_maxe_pct": 52.704376220703125,
+      "pvr_pct": 0.0,
+      "pvr_violations": 0,
+      "pvr_discharge_steps": 353499
+    },
+    {
+      "ablation": "ocv_rest_only",
+      "label": "+OCV-rest only",
+      "target_temp": "n20degC",
+      "n_windows": 5289,
+      "t0_rmse_pct": 13.887676239013672,
+      "t0_maxe_pct": 46.36024475097656,
+      "full_rmse_pct": 13.94079303741455,
+      "full_maxe_pct": 47.1837043762207,
+      "pvr_pct": 0.0,
+      "pvr_violations": 0,
+      "pvr_discharge_steps": 353499
+    },
+    {
+      "ablation": "history_only",
+      "label": "+History only",
+      "target_temp": "n20degC",
+      "n_windows": 5289,
+      "t0_rmse_pct": 23.123321533203125,
+      "t0_maxe_pct": 61.829830169677734,
+      "full_rmse_pct": 22.894222259521484,
+      "full_maxe_pct": 62.131351470947266,
+      "pvr_pct": 0.0,
+      "pvr_violations": 0,
+      "pvr_discharge_steps": 353499
+    },
+    {
+      "ablation": "full_context",
+      "label": "+OCV-rest + History",
+      "target_temp": "n20degC",
+      "n_windows": 5289,
+      "t0_rmse_pct": 17.984128952026367,
+      "t0_maxe_pct": 52.9068717956543,
+      "full_rmse_pct": 17.496814727783203,
+      "full_maxe_pct": 52.9068717956543,
+      "pvr_pct": 0.0,
+      "pvr_violations": 0,
+      "pvr_discharge_steps": 353499
+    }
+  ]
+}

@@ -1,12 +1,10 @@
-# Byte-compiled / optimized / DLL files
+# ==========================================================
+# Python cache and build artifacts
+# ==========================================================
 __pycache__/
 *.py[cod]
 *$py.class
-
-# C extensions
 *.so
-
-# Distribution / packaging
 .Python
 build/
 develop-eggs/
@@ -25,22 +23,18 @@ share/python-wheels/
 .installed.cfg
 *.egg
 MANIFEST
-
-# PyInstaller
 *.manifest
 *.spec
 
-# Installer logs
-pip-log.txt
-pip-delete-this-directory.txt
-
-# Unit test / coverage reports
+# ==========================================================
+# Test, coverage, and local tool cache
+# ==========================================================
 htmlcov/
 .tox/
 .nox/
 .coverage
 .coverage.*
-.cache
+.cache/
 nosetests.xml
 coverage.xml
 *.cover
@@ -49,60 +43,132 @@ coverage.xml
 .pytest_cache/
 cover/
 
-# Jupyter Notebook
-.ipynb_checkpoints
-
-# IPython
+# ==========================================================
+# Notebook and IDE state
+# ==========================================================
+.ipynb_checkpoints/
 profile_default/
 ipython_config.py
+.vscode/
+.idea/
 
-# Environments
+# ==========================================================
+# Virtual environments and local secrets
+# ==========================================================
 .env
-.venv
-env/
+.env.*
+.venv/
 venv/
+env/
 ENV/
 env.bak/
 venv.bak/
 
-# Project Specific
-data/raw/*
+# ==========================================================
+# Heavy datasets and generated arrays
+# Keep raw/processed data local. The README explains expected layout.
+# ==========================================================
+data/raw/**
 !data/raw/.gitkeep
-data/processed/*
+data/processed/**
 !data/processed/.gitkeep
-logs/*
-!logs/.gitkeep
-outputs/*
-!outputs/.gitkeep
-models/*
-!models/.gitkeep
-.vscode/
+data/**/*.csv
+data/**/*.mat
+data/**/*.npy
+data/**/*.npz
+data/**/*.zip
+data/**/*.h5
+data/**/*.hdf5
+data/**/*.mlx
+data/**/*.m
+data/**/*.pptx
+data/**/*.pdf
 
-# Ignore large data files or local info
-*.log
-*.csv
-*.h5
-*.hdf5
+# ==========================================================
+# Model checkpoints and training artifacts
+# ==========================================================
 *.pt
 *.pth
+*.ckpt
+models/
+checkpoints/
 
-# OS specific
+# ==========================================================
+# Logs
+# Historical JSON/CSV logs are small and useful for ablation notebooks.
+# Other log dump formats stay ignored.
+# ==========================================================
+*.log
+logs/*
+!logs/.gitkeep
+!logs/*.json
+!logs/*.csv
+
+# ==========================================================
+# Outputs
+# Keep only lightweight reviewer evidence: JSON ledgers and selected figures.
+# Heavy checkpoints/arrays/raw CSV exports remain ignored.
+# ==========================================================
+outputs/*
+!outputs/.gitkeep
+!outputs/data_audit_tables.json
+!outputs/data_audit_tables.md
+
+!outputs/v5_contextual/
+outputs/v5_contextual/*
+!outputs/v5_contextual/sprint50_contextual/
+outputs/v5_contextual/sprint50_contextual/*
+!outputs/v5_contextual/sprint50_contextual/*.json
+
+!outputs/v7_final/
+outputs/v7_final/*
+!outputs/v7_final/*.json
+!outputs/v7_final/sprint49_anchor_pretraining/
+outputs/v7_final/sprint49_anchor_pretraining/*
+!outputs/v7_final/sprint49_anchor_pretraining/*.json
+
+!outputs/v8_tcn_redemption/
+outputs/v8_tcn_redemption/*
+!outputs/v8_tcn_redemption/sprint52/
+outputs/v8_tcn_redemption/sprint52/*
+!outputs/v8_tcn_redemption/sprint52/*.json
+
+!outputs/figures/
+outputs/figures/*
+!outputs/figures/fig_q1_observability_collapse.png
+!outputs/figures/fig_q1_transient_dynamic_profile.png
+!outputs/figures/learning_curves.png
+!outputs/figures/02_preprocessing_verification.png
+!outputs/figures/ablation_studies/
+outputs/figures/ablation_studies/*
+!outputs/figures/ablation_studies/*.png
+
+# ==========================================================
+# Archive and local-only planning material
+# ==========================================================
+archive/
+
+# Keep this folder local for personal prompting/context notes.
+System Prompt & Project Brief/
+
+# ==========================================================
+# Manuscripts and personal documents
+# Current handoff is for source-code/project correction, not manuscript review.
+# ==========================================================
+JNTETI_*.md
+JurnalDraft.md
+/Laporan_*
+/Skripsi_*
+/UTS*
+/uts*
+*.docx
+*.pptx
+*.pdf
+~$*
+
+# ==========================================================
+# OS files
+# ==========================================================
 .DS_Store
 Thumbs.db
-
-# Drafts, Papers, and Personal Files
-*UTS*
-*uts*
-*Laporan*
-*laporan*
-*Skripsi*
-*skripsi*
-*Jurnal*
-*jurnal*
-*JNTETI*
-*jnteti*
-*Draft*
-*draft*
-~$*
-*.docx
-*.pdf
+desktop.ini

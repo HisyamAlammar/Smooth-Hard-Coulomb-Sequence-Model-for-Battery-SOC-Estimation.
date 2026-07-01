@@ -1,0 +1,150 @@
+{
+  "raw_integrity": [
+    {
+      "Temperature": "40 C",
+      "Drive files": 12,
+      "Raw rows": 633806,
+      "Dropped/NaN rows": 22,
+      "Voltage violations (<2.5 or >4.25 V)": 0,
+      "Current spikes (|I|>20 A)": 0,
+      "SOC anomalies before clipping": 0,
+      "SOC rows audited": 633784
+    },
+    {
+      "Temperature": "25 C",
+      "Drive files": 12,
+      "Raw rows": 927095,
+      "Dropped/NaN rows": 23,
+      "Voltage violations (<2.5 or >4.25 V)": 0,
+      "Current spikes (|I|>20 A)": 0,
+      "SOC anomalies before clipping": 0,
+      "SOC rows audited": 927072
+    },
+    {
+      "Temperature": "10 C",
+      "Drive files": 11,
+      "Raw rows": 847097,
+      "Dropped/NaN rows": 34,
+      "Voltage violations (<2.5 or >4.25 V)": 0,
+      "Current spikes (|I|>20 A)": 0,
+      "SOC anomalies before clipping": 0,
+      "SOC rows audited": 847063
+    },
+    {
+      "Temperature": "0 C",
+      "Drive files": 11,
+      "Raw rows": 778005,
+      "Dropped/NaN rows": 21,
+      "Voltage violations (<2.5 or >4.25 V)": 0,
+      "Current spikes (|I|>20 A)": 0,
+      "SOC anomalies before clipping": 0,
+      "SOC rows audited": 777984
+    },
+    {
+      "Temperature": "-10 C",
+      "Drive files": 12,
+      "Raw rows": 760615,
+      "Dropped/NaN rows": 32,
+      "Voltage violations (<2.5 or >4.25 V)": 0,
+      "Current spikes (|I|>20 A)": 0,
+      "SOC anomalies before clipping": 0,
+      "SOC rows audited": 760583
+    },
+    {
+      "Temperature": "-20 C",
+      "Drive files": 12,
+      "Raw rows": 552061,
+      "Dropped/NaN rows": 12,
+      "Voltage violations (<2.5 or >4.25 V)": 0,
+      "Current spikes (|I|>20 A)": 0,
+      "SOC anomalies before clipping": 0,
+      "SOC rows audited": 552049
+    }
+  ],
+  "scenario_composition": [
+    {
+      "Scenario": "A",
+      "Temperature": "40 C",
+      "Train windows": 0,
+      "Validation windows": 0,
+      "Test windows": 6148
+    },
+    {
+      "Scenario": "A",
+      "Temperature": "25 C",
+      "Train windows": 8199,
+      "Validation windows": 790,
+      "Test windows": 0
+    },
+    {
+      "Scenario": "A",
+      "Temperature": "10 C",
+      "Train windows": 7442,
+      "Validation windows": 675,
+      "Test windows": 0
+    },
+    {
+      "Scenario": "A",
+      "Temperature": "0 C",
+      "Train windows": 0,
+      "Validation windows": 7619,
+      "Test windows": 0
+    },
+    {
+      "Scenario": "A",
+      "Temperature": "-10 C",
+      "Train windows": 0,
+      "Validation windows": 0,
+      "Test windows": 7387
+    },
+    {
+      "Scenario": "A",
+      "Temperature": "-20 C",
+      "Train windows": 0,
+      "Validation windows": 0,
+      "Test windows": 5379
+    },
+    {
+      "Scenario": "B",
+      "Temperature": "40 C",
+      "Train windows": 4245,
+      "Validation windows": 448,
+      "Test windows": 1079
+    },
+    {
+      "Scenario": "B",
+      "Temperature": "25 C",
+      "Train windows": 6346,
+      "Validation windows": 789,
+      "Test windows": 1712
+    },
+    {
+      "Scenario": "B",
+      "Temperature": "10 C",
+      "Train windows": 5750,
+      "Validation windows": 674,
+      "Test windows": 1520
+    },
+    {
+      "Scenario": "B",
+      "Temperature": "0 C",
+      "Train windows": 5286,
+      "Validation windows": 618,
+      "Test windows": 1395
+    },
+    {
+      "Scenario": "B",
+      "Temperature": "-10 C",
+      "Train windows": 5107,
+      "Validation windows": 597,
+      "Test windows": 1342
+    },
+    {
+      "Scenario": "B",
+      "Temperature": "-20 C",
+      "Train windows": 3723,
+      "Validation windows": 412,
+      "Test windows": 962
+    }
+  ]
+}

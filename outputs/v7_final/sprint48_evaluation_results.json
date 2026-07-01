@@ -1,0 +1,196 @@
+[
+  {
+    "scenario": "scenario_A",
+    "model_kind": "vanilla_lstm",
+    "model_name": "VanillaLSTM",
+    "checkpoint": "outputs\\v7_final\\vanilla_lstm_scenario_A.pt",
+    "checkpoint_epoch": 31,
+    "parameter_count": 53569,
+    "data_source": "data\\processed\\v4_scenario_A",
+    "metrics": {
+      "rmse_full_pct": 13.371223449707031,
+      "mae_full_pct": 10.483756065368652,
+      "maxe_full_pct": 51.02422332763672,
+      "r2_full": 0.7534472942352295,
+      "rmse_last_pct": 13.031487464904785,
+      "mae_last_pct": 10.231529235839844,
+      "maxe_last_pct": 41.659854888916016,
+      "r2_last": 0.7645461559295654,
+      "pvr_pct": 49.96941782519368,
+      "pvr_violations": 646223,
+      "pvr_discharge_steps": 1293237,
+      "n_windows": 18914,
+      "window": 100
+    },
+    "per_temp_last_step": {
+      "40degC": {
+        "rmse_pct": 7.819575786590576,
+        "mae_pct": 6.123856544494629,
+        "n_windows": 6148
+      },
+      "n10degC": {
+        "rmse_pct": 11.80381965637207,
+        "mae_pct": 9.503369331359863,
+        "n_windows": 7387
+      },
+      "n20degC": {
+        "rmse_pct": 18.327611923217773,
+        "mae_pct": 15.926434516906738,
+        "n_windows": 5379
+      }
+    }
+  },
+  {
+    "scenario": "scenario_A",
+    "model_kind": "hard_coulomb_lstm",
+    "model_name": "HardCoulombLSTM",
+    "checkpoint": "outputs\\v7_final\\hard_coulomb_lstm_scenario_A.pt",
+    "checkpoint_epoch": 19,
+    "parameter_count": 54626,
+    "data_source": "data\\processed\\v4_scenario_A",
+    "metrics": {
+      "rmse_full_pct": 12.710746765136719,
+      "mae_full_pct": 9.873574256896973,
+      "maxe_full_pct": 55.11263656616211,
+      "r2_full": 0.777202844619751,
+      "rmse_last_pct": 12.55694580078125,
+      "mae_last_pct": 9.745223999023438,
+      "maxe_last_pct": 54.8899040222168,
+      "r2_last": 0.7813819646835327,
+      "pvr_pct": 0.0,
+      "pvr_violations": 0,
+      "pvr_discharge_steps": 1293237,
+      "n_windows": 18914,
+      "window": 100
+    },
+    "per_temp_last_step": {
+      "40degC": {
+        "rmse_pct": 6.971739768981934,
+        "mae_pct": 5.274905204772949,
+        "n_windows": 6148
+      },
+      "n10degC": {
+        "rmse_pct": 11.703147888183594,
+        "mae_pct": 9.632932662963867,
+        "n_windows": 7387
+      },
+      "n20degC": {
+        "rmse_pct": 17.629165649414062,
+        "mae_pct": 15.0088472366333,
+        "n_windows": 5379
+      }
+    }
+  },
+  {
+    "scenario": "scenario_B",
+    "model_kind": "vanilla_lstm",
+    "model_name": "VanillaLSTM",
+    "checkpoint": "outputs\\v7_final\\vanilla_lstm_scenario_B.pt",
+    "checkpoint_epoch": 77,
+    "parameter_count": 53569,
+    "data_source": "data\\processed\\v4_scenario_B",
+    "metrics": {
+      "rmse_full_pct": 7.280603885650635,
+      "mae_full_pct": 5.0326457023620605,
+      "maxe_full_pct": 48.79939651489258,
+      "r2_full": 0.8212119340896606,
+      "rmse_last_pct": 6.221494674682617,
+      "mae_last_pct": 4.4041523933410645,
+      "maxe_last_pct": 33.97465515136719,
+      "r2_last": 0.8685494065284729,
+      "pvr_pct": 41.05519204918329,
+      "pvr_violations": 147515,
+      "pvr_discharge_steps": 359309,
+      "n_windows": 8010,
+      "window": 100
+    },
+    "per_temp_last_step": {
+      "0degC": {
+        "rmse_pct": 3.504692316055298,
+        "mae_pct": 2.429351329803467,
+        "n_windows": 1395
+      },
+      "10degC": {
+        "rmse_pct": 4.564245223999023,
+        "mae_pct": 4.067551136016846,
+        "n_windows": 1520
+      },
+      "25degC": {
+        "rmse_pct": 3.825277090072632,
+        "mae_pct": 3.4935195446014404,
+        "n_windows": 1712
+      },
+      "40degC": {
+        "rmse_pct": 3.021458387374878,
+        "mae_pct": 1.6215229034423828,
+        "n_windows": 1079
+      },
+      "n10degC": {
+        "rmse_pct": 10.747380256652832,
+        "mae_pct": 8.821635246276855,
+        "n_windows": 1342
+      },
+      "n20degC": {
+        "rmse_pct": 8.611042976379395,
+        "mae_pct": 6.378866195678711,
+        "n_windows": 962
+      }
+    }
+  },
+  {
+    "scenario": "scenario_B",
+    "model_kind": "hard_coulomb_lstm",
+    "model_name": "HardCoulombLSTM",
+    "checkpoint": "outputs\\v7_final\\hard_coulomb_lstm_scenario_B.pt",
+    "checkpoint_epoch": 20,
+    "parameter_count": 54626,
+    "data_source": "data\\processed\\v4_scenario_B",
+    "metrics": {
+      "rmse_full_pct": 8.56667423248291,
+      "mae_full_pct": 7.007936954498291,
+      "maxe_full_pct": 34.99850845336914,
+      "r2_full": 0.7524697780609131,
+      "rmse_last_pct": 8.714054107666016,
+      "mae_last_pct": 7.209656238555908,
+      "maxe_last_pct": 34.99850845336914,
+      "r2_last": 0.7421224117279053,
+      "pvr_pct": 0.0,
+      "pvr_violations": 0,
+      "pvr_discharge_steps": 359309,
+      "n_windows": 8010,
+      "window": 100
+    },
+    "per_temp_last_step": {
+      "0degC": {
+        "rmse_pct": 10.132158279418945,
+        "mae_pct": 9.213598251342773,
+        "n_windows": 1395
+      },
+      "10degC": {
+        "rmse_pct": 8.712894439697266,
+        "mae_pct": 7.732548713684082,
+        "n_windows": 1520
+      },
+      "25degC": {
+        "rmse_pct": 5.935838222503662,
+        "mae_pct": 5.2826361656188965,
+        "n_windows": 1712
+      },
+      "40degC": {
+        "rmse_pct": 5.950109481811523,
+        "mae_pct": 4.602683067321777,
+        "n_windows": 1079
+      },
+      "n10degC": {
+        "rmse_pct": 11.559181213378906,
+        "mae_pct": 9.497014045715332,
+        "n_windows": 1342
+      },
+      "n20degC": {
+        "rmse_pct": 8.639410018920898,
+        "mae_pct": 6.640068531036377,
+        "n_windows": 962
+      }
+    }
+  }
+]
