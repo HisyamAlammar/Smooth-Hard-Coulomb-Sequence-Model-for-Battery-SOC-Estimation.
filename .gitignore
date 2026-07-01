@@ -156,8 +156,10 @@ outputs/figures/ablation_studies/*
 # ==========================================================
 archive/
 
-# Keep this folder local for personal prompting/context notes.
+# Keep personal prompting/context notes local only.
 System Prompt & Project Brief/
+System Prompt & Project Brief/**
+System Prompt & Project Brief/SystemPrompt&ProjectBrief.md
 
 # ==========================================================
 # Manuscripts and personal documents
