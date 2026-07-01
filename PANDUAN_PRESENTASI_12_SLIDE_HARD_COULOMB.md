@@ -327,8 +327,13 @@ C_t = \sum_{\tau=1}^{t} \Delta \widehat{\mathrm{SOC}}_{\tau}
 $$
 
 $$
-w = \max(h_i - l_o, \epsilon), \qquad
-\widehat{\mathrm{SOC}}_{\mathrm{anchor}} = l_o + w \cdot \sigma\left(z^{\mathrm{anchor}}\right)
+\ell = \operatorname{clip}_{[0,1]}\left(-\min_t C_t\right), \qquad
+h = \operatorname{clip}_{[0,1]}\left(1-\max_t C_t\right)
+$$
+
+$$
+w = \max(h - \ell, \epsilon), \qquad
+\widehat{\mathrm{SOC}}_{\mathrm{anchor}} = \ell + w \cdot \sigma\left(z^{\mathrm{anchor}}\right)
 $$
 
 $$

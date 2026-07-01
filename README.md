@@ -49,8 +49,13 @@ C_t = \sum_{\tau=1}^{t} \Delta \widehat{\mathrm{SOC}}_{\tau}
 $$
 
 $$
-w = \max(h_i - l_o, \epsilon), \qquad
-\widehat{\mathrm{SOC}}_{\mathrm{anchor}} = l_o + w \cdot \sigma\left(z^{\mathrm{anchor}}\right)
+\ell = \operatorname{clip}_{[0,1]}\left(-\min_t C_t\right), \qquad
+h = \operatorname{clip}_{[0,1]}\left(1-\max_t C_t\right)
+$$
+
+$$
+w = \max(h - \ell, \epsilon), \qquad
+\widehat{\mathrm{SOC}}_{\mathrm{anchor}} = \ell + w \cdot \sigma\left(z^{\mathrm{anchor}}\right)
 $$
 
 $$
@@ -71,6 +76,10 @@ File implementasi utama:
 - `src/model_v6_contextual.py` - varian contextual anchor.
 - `src/preprocessing_v4.py` - pipeline preprocessing final tanpa contextual history.
 - `src/preprocessing_v5_contextual.py` - pipeline preprocessing contextual dengan history kausal.
+
+## Sumber Data
+
+Penelitian ini menggunakan **LG 18650HG2 Li-ion Battery Dataset** yang tersedia publik melalui Mendeley Data dan disediakan oleh Philip Kollmeyer. Dataset ini berisi profil pengujian baterai lithium-ion LG HG2 pada beragam drive cycle, termasuk UDDS, HWFET, dan LA92, serta mencakup enam temperatur ambient: `40 C`, `25 C`, `10 C`, `0 C`, `-10 C`, dan `-20 C`. Kombinasi drive cycle dinamis dan rentang temperatur ekstrem membuat dataset ini sesuai untuk menguji estimasi SOC pada kondisi Out-of-Distribution (OOD), terutama ketika model harus menghadapi temperatur dingin ekstrem yang tidak muncul dalam data training. Sumber resmi dataset: <https://data.mendeley.com/datasets/b5mj79w5w9>.
 
 ## Dataset dan Protokol Eksperimen
 
