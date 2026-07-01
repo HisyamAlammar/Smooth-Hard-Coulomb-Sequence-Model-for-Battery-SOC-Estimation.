@@ -66,12 +66,16 @@ venv.bak/
 
 # ==========================================================
 # Heavy datasets and generated arrays
-# Keep raw/processed data local. The README explains expected layout.
+# Keep full raw/processed data local. Commit only lightweight data docs/metadata.
 # ==========================================================
+!data/README.md
 data/raw/**
 !data/raw/.gitkeep
 data/processed/**
+!data/processed/
 !data/processed/.gitkeep
+!data/processed/**/
+!data/processed/**/metadata*.json
 data/**/*.csv
 data/**/*.mat
 data/**/*.npy
@@ -83,6 +87,10 @@ data/**/*.mlx
 data/**/*.m
 data/**/*.pptx
 data/**/*.pdf
+
+# Optional tiny reviewer sample, if created later.
+!data/raw_sample/
+!data/raw_sample/**
 
 # ==========================================================
 # Model checkpoints and training artifacts

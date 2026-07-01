@@ -317,7 +317,7 @@ $$
 \Delta \widehat{\mathrm{SOC}}_t =
 \begin{cases}
 -L_t m_t, & I_t < -I_{\mathrm{th}} \\
-\phantom{-}L_t m_t, & I_t > I_{\mathrm{th}} \\
++L_t m_t, & I_t > I_{\mathrm{th}} \\
 0, & |I_t| \le I_{\mathrm{th}}
 \end{cases}
 $$

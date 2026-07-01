@@ -39,7 +39,7 @@ $$
 \Delta \widehat{\mathrm{SOC}}_t =
 \begin{cases}
 -L_t m_t, & I_t < -I_{\mathrm{th}} \\
-\phantom{-}L_t m_t, & I_t > I_{\mathrm{th}} \\
++L_t m_t, & I_t > I_{\mathrm{th}} \\
 0, & |I_t| \le I_{\mathrm{th}}
 \end{cases}
 $$
@@ -74,7 +74,7 @@ File implementasi utama:
 
 ## Dataset dan Protokol Eksperimen
 
-Dataset yang digunakan adalah data baterai lithium-ion bergaya LG HG2 dengan beberapa temperatur operasi: `40 C`, `25 C`, `10 C`, `0 C`, `-10 C`, dan `-20 C`. Dataset asli tidak disertakan dalam repository karena ukurannya besar, tetapi pipeline mengharapkan data mentah tersedia secara lokal di folder `data/raw/`.
+Dataset yang digunakan adalah data baterai lithium-ion bergaya LG HG2 dengan beberapa temperatur operasi: `40 C`, `25 C`, `10 C`, `0 C`, `-10 C`, dan `-20 C`. Untuk koreksi dosen, repository sebaiknya menyertakan **kode akuisisi/preprocessing**, `data/README.md`, metadata preprocessing kecil, audit table, dan figure hasil analisis. Dataset mentah penuh berukuran sekitar `835 MB`, sedangkan array hasil preprocessing sekitar `756 MB`; karena itu data besar sebaiknya tidak dikomit langsung ke Git biasa. Jika dosen perlu menjalankan ulang dari nol, data mentah dapat diletakkan secara lokal di `data/raw/` mengikuti instruksi pada `data/README.md`, atau dibagikan melalui Git LFS/Google Drive/OneDrive sebagai data bundle terpisah.
 
 Fokus eksperimen adalah menguji apakah model SOC tetap akurat dan aman secara fisika ketika menghadapi kondisi temperatur yang berbeda. Karena itu penelitian memakai dua skenario pembagian data:
 
@@ -222,6 +222,11 @@ File metrik utama:
 ## Struktur Repositori
 
 ```text
+data/
+  README.md                         Panduan penempatan dataset mentah dan reproduksi data.
+  raw/                              Folder lokal untuk dataset mentah LG HG2, tidak ikut Git biasa.
+  processed/                        Folder lokal hasil preprocessing, dibuat ulang oleh script.
+
 src/
   config.py                         Konfigurasi umum penelitian.
   hppc_rint_extractor.py            Dukungan fitur R_int dan V_proxy.
@@ -252,7 +257,7 @@ outputs/
   v8_tcn_redemption/                Metrik final TCN.
 ```
 
-Folder data besar, checkpoint model, draft manuskrip jurnal, dan archive eksperimen lama tidak disertakan dalam paket koreksi source code.
+Folder data besar, checkpoint model, draft manuskrip jurnal, dan archive eksperimen lama tidak disertakan dalam paket koreksi source code. Yang disertakan untuk audit adalah kode pipeline, metadata kecil, tabel audit, log metrik JSON/CSV, notebook ablasi, dan figure pilihan.
 
 ## Setup Environment
 
@@ -276,7 +281,19 @@ pip install -r requirements.txt
 
 ## Pipeline Reproduksi
 
-Pipeline penuh membutuhkan dataset baterai bergaya LG HG2 di folder lokal `data/raw/`. Dataset mentah dan array hasil preprocessing tidak dikomit karena ukurannya besar.
+Pipeline penuh membutuhkan dataset baterai bergaya LG HG2 di folder lokal `data/raw/`. Dataset mentah penuh dan array hasil preprocessing tidak dikomit melalui Git biasa karena ukurannya besar. Untuk koreksi, dosen tetap dapat melihat cara data ditangani melalui `data/README.md`, `tools/generate_data_audit_tables.py`, metadata preprocessing, dan tabel audit di `outputs/data_audit_tables.md`.
+
+Rekomendasi pembagian data untuk koreksi:
+
+| Jenis file | Status GitHub | Alasan |
+|---|---|---|
+| Kode akuisisi, preprocessing, training, evaluasi | Ikut GitHub | Diperlukan untuk memeriksa alur penelitian dari awal sampai akhir. |
+| `data/README.md` | Ikut GitHub | Menjelaskan sumber data, struktur folder, dan cara menjalankan ulang pipeline. |
+| Metadata preprocessing `metadata*.json` | Ikut GitHub | Bukti split-before-windowing, jumlah window, fitur, dan zero-overlap tanpa membawa array besar. |
+| Audit table dan log metrik JSON/CSV | Ikut GitHub | Bukti hasil eksperimen dan validasi. |
+| Dataset mentah penuh | Jangan commit Git biasa; gunakan Git LFS atau link data terpisah | Ukuran besar dan membuat clone repository berat. |
+| Array `.npy` hasil preprocessing | Tidak perlu ikut GitHub | Dapat dibuat ulang dari script preprocessing. |
+| Checkpoint `.pt/.pth` | Tidak perlu ikut GitHub | Besar dan semantik checkpoint mudah kadaluarsa setelah refactor model. |
 
 ### 1. Membuat Array Hasil Preprocessing
 
