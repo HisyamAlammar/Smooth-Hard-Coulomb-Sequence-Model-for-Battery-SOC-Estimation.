@@ -45,7 +45,7 @@ $$
 $$
 
 $$
-\mathrm{PVR} = 0.00\% \quad \text{by architectural invariant}
+\mathrm{PVR} = 0.00\% \quad \mathrm{by\ architectural\ invariant}
 $$
 
 Opsional visual kecil:
@@ -327,8 +327,8 @@ C_t = \sum_{\tau=1}^{t} \Delta \widehat{\mathrm{SOC}}_{\tau}
 $$
 
 $$
-\ell = \operatorname{clip}_{[0,1]}\left(-\min_t C_t\right), \qquad
-h = \operatorname{clip}_{[0,1]}\left(1-\max_t C_t\right)
+\ell = \min\left(1, \max\left(0, -\min_t C_t\right)\right), \qquad
+h = \min\left(1, \max\left(0, 1-\max_t C_t\right)\right)
 $$
 
 $$
