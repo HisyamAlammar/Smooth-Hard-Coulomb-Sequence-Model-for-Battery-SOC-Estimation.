@@ -20,7 +20,7 @@ Hipotesis penelitian ini adalah:
 
 1. Model sequence biasa seperti LSTM dan TCN dapat mengoptimalkan error prediksi, tetapi tidak menjamin keselamatan fisika.
 2. Soft physics penalty atau Soft-PINN dapat mengurangi pelanggaran, tetapi tidak dapat menjamin Physics Violation Rate (PVR) menjadi nol.
-3. Constraint struktural berbasis Coulomb dapat menjamin `0.00%` PVR selama asumsi arus dan timestep valid.
+3. Constraint struktural berbasis Coulomb menyediakan mekanisme keselamatan algoritmik yang memberi **structural sign-consistency** untuk mendukung safety case ISO/PAS 8800 di masa depan, selama asumsi arus, timestep, dan sensor integrity valid.
 4. Error besar yang masih muncul pada `-20 C` lebih tepat dijelaskan sebagai masalah observability pada anchor SOC awal, bukan kegagalan constraint Coulomb.
 
 ## Ide Model Final
@@ -250,6 +250,10 @@ src/
   sprint48_safety_ablation.py       Ablasi safety factor eta ($\eta$).
   sprint50_train_contextual.py      Eksperimen contextual anchor.
   sprint52_tcn_redemption.py        Evaluasi TCN dan contextual TCN.
+  sprint54_null_model.py            Baseline OCV anchor + Coulomb counting tanpa neural network.
+  sprint55_posthoc_clamp.py         Baseline Vanilla LSTM dengan clamp inference-only.
+  sprint56_oracle_anchor.py         Eksperimen oracle anchor untuk isolasi bottleneck -20 C.
+  sprint57_ekf_baseline.py          Baseline EKF 1-RC ECM klasik.
 
 notebooks/
   05_q1_eda_money_plots.py          Figure EDA untuk observability collapse.
@@ -264,6 +268,10 @@ outputs/
   v7_final/                         Metrik final LSTM.
   v5_contextual/                    Metrik contextual.
   v8_tcn_redemption/                Metrik final TCN.
+  sprint54_null_model_results.json  Hasil baseline tanpa neural network.
+  sprint55_posthoc_clamp_results.json Hasil baseline clamp post-hoc.
+  sprint56_oracle_anchor_results.json Hasil oracle-anchor -20 C.
+  sprint57_ekf_results.json         Hasil baseline EKF 1-RC ECM.
 ```
 
 Folder data besar, checkpoint model, draft manuskrip jurnal, dan archive eksperimen lama tidak disertakan dalam paket koreksi source code. Yang disertakan untuk audit adalah kode pipeline, metadata kecil, tabel audit, log metrik JSON/CSV, notebook ablasi, dan figure pilihan.
@@ -336,6 +344,28 @@ python src/sprint52_tcn_redemption.py
 python src/sprint48_evaluate_all.py
 ```
 
+### 5b. Baseline Red-Team Tambahan
+
+```bash
+python src/sprint54_null_model.py
+python src/sprint55_posthoc_clamp.py
+python src/sprint56_oracle_anchor.py
+python src/sprint57_ekf_baseline.py
+```
+
+Ringkasan hasil red-team tambahan yang tersimpan pada `outputs/`:
+
+| Eksperimen | Skenario | RMSE (%) | MaxE (%) | PVR (%) | Makna utama |
+|---|---:|---:|---:|---:|---|
+| Null OCV + Coulomb Counting | A | 19.2749 | 93.9050 | 0.0000 | Matematika sederhana dapat menjaga arah fisik, tetapi error ekstrem masih sangat besar. |
+| Null OCV + Coulomb Counting | B | 17.3675 | 100.0000 | 0.0000 | OCV anchor sederhana tidak cukup untuk estimasi SOC robust. |
+| Post-hoc Clamp Vanilla LSTM | A | 25.5469 | 48.1584 | 0.0000 | Clamp inference-only dapat memaksa PVR nol, tetapi merusak akurasi rata-rata. |
+| Post-hoc Clamp Vanilla LSTM | B | 24.7329 | 48.7994 | 0.0000 | Constraint harus dilatih sebagai bagian dari arsitektur, bukan ditempel setelah inference. |
+| EKF 1-RC ECM awal | A | 16.9906 | 100.0000 | 40.7849 | Baseline EKF parameter-asumsi rentan divergen dan tetap melanggar arah fisik. |
+| EKF 1-RC ECM awal | B | 11.1329 | 100.0000 | 38.4341 | Hasil ini hanya red-team comparator, bukan observer industri terkalibrasi. |
+
+Eksperimen oracle-anchor pada `outputs/sprint56_oracle_anchor_results.json` mengisolasi data `-20 C`. Ketika anchor awal diganti dengan SOC ground-truth, MaxE turun dari `55.1126%` menjadi `4.5782%` pada Skenario A dan dari `34.9985%` menjadi `3.0117%` pada Skenario B. Ini memperkuat diagnosis bahwa error ekstrem suhu dingin berasal dari Anchor Trap/observability bottleneck, bukan kegagalan delta sequence model.
+
 ### 6. Membuat Tabel Audit Data dan Figure EDA
 
 ```bash
@@ -376,10 +406,11 @@ Figure pilihan yang disimpan untuk inspeksi cepat:
 
 Repositori ini siap untuk koreksi teknis, tetapi penelitian masih memiliki beberapa limitasi:
 
-- Belum ada baseline observer klasik seperti EKF, UKF, atau ECM pada perbandingan final.
+- Baseline EKF 1-RC ECM pada `src/sprint57_ekf_baseline.py` memakai parameter ECM asumsi untuk red-team comparison; baseline ini belum menggantikan identifikasi ECM industri yang dikalibrasi penuh.
 - Hasil final belum dilaporkan dengan variasi multi-seed.
-- Jumlah parameter menunjukkan potensi embedded/TinyML, tetapi belum ada validasi latency, WCET, quantization, dan hardware-in-the-loop.
-- Jaminan PVR bergantung pada asumsi bahwa arus, timestep, dan threshold arus valid.
+- Jumlah parameter hanya menunjukkan potensi embedded/TinyML; belum ada validasi latency, WCET, quantization, dan hardware-in-the-loop.
+- PVR `0.00%` adalah mekanisme sign-consistency algoritmik, bukan klaim functional safety compliance. Jaminan ini mengasumsikan sensor integrity: arus, timestep, arah arus, dan threshold valid. Sensor fault, current bias, delay, atau fault laundering dapat membuat audit PVR menyesatkan.
+- Deployment TinyML nyata membutuhkan profiling kuantisasi INT8 dan analisis floating-point/fixed-point rounding untuk memastikan invariant tanda tidak rusak oleh numerik deployment.
 - MaxE tinggi pada `-20 C` masih menjadi bottleneck observability karena anchor SOC sulit ditentukan dari terminal voltage pada suhu ekstrem.
 
 ## Panduan Koreksi untuk Dosen

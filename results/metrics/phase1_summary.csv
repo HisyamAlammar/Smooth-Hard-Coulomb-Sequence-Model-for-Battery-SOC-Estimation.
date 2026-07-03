@@ -1,0 +1,5 @@
+scenario,model,rmse_full_pct,mae_full_pct,maxe_full_pct,pvr_discharge_eps0,pvr_discharge_eps0.0005,pvr_discharge_eps0.001,pvr_discharge_eps0.0025,pvr_discharge_eps0.005,pvr_discharge_eps0.01,pvr_charge_eps0,pvr_charge_eps0.0005,pvr_charge_eps0.001,pvr_charge_eps0.0025,pvr_charge_eps0.005,pvr_charge_eps0.01,pvr_rest_eps0,pvr_rest_eps0.0005,pvr_rest_eps0.001,pvr_rest_eps0.0025,pvr_rest_eps0.005,pvr_rest_eps0.01,delta_ratio_discharge,delta_mae_all
+scenario_A,vanilla_lstm,13.3712,10.4838,51.0242,49.9694,36.3929,26.7325,14.2582,8.0524,4.369,62.897,51.1167,40.3441,21.5581,11.4071,5.5462,99.9719,32.5365,19.6765,10.8586,7.2222,4.8102,20.0925,4.575e-03
+scenario_A,hard_coulomb_lstm,12.7107,9.8736,55.1126,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.718,1.078e-04
+scenario_B,vanilla_lstm,7.2806,5.0326,48.7994,41.0552,20.9023,12.8892,5.5203,2.7071,1.2499,70.8874,49.2675,34.3326,16.1328,6.6645,2.5212,99.9911,36.187,25.0154,10.1042,5.3118,2.3086,16.3031,3.341e-03
+scenario_B,hard_coulomb_lstm,8.5667,7.0079,34.9985,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.3807,9.172e-05

@@ -1,0 +1,7 @@
+scenario,quantity,mean,median,p90,p99,max
+scenario_A,pred_window_range,0.28259,0.29484,0.41297,0.45554,0.54088
+scenario_A,true_window_range,0.01389,0.00975,0.03124,0.04835,0.05885
+scenario_A,range_ratio_pred_over_true,20.34,,,,
+scenario_B,pred_window_range,0.24881,0.25988,0.31776,0.3471,0.38691
+scenario_B,true_window_range,0.00899,0.00548,0.02536,0.04571,0.05735
+scenario_B,range_ratio_pred_over_true,27.691,,,,

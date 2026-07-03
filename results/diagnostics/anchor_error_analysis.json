@@ -1,0 +1,115 @@
+{
+  "provenance": {
+    "timestamp": "2026-07-03T06:50:51",
+    "scenario": "scenario_A",
+    "split": "test",
+    "data_source": "data\\processed\\v4_scenario_A",
+    "checkpoint": "outputs/v7_final/hard_coulomb_lstm_*.pt",
+    "seed": 42,
+    "config": {
+      "current_threshold_A": 0.05,
+      "pvr_epsilons": [
+        0.0,
+        0.0005,
+        0.001,
+        0.0025,
+        0.005,
+        0.01
+      ],
+      "q_nominal_Ah": 3.0
+    },
+    "experiment": "anchor_error_analysis",
+    "anchor_mechanism": "anchor_head(h[:,0,:]) -> sigmoid -> remapped to [lo,hi]"
+  },
+  "results": {
+    "scenario_A": {
+      "overall": {
+        "mae_pct": 10.1318,
+        "rmse_pct": 13.1172,
+        "p95_pct": 27.0488,
+        "maxe_pct": 57.1103,
+        "n": 18914
+      },
+      "rest_start": {
+        "mae_pct": 6.231,
+        "rmse_pct": 8.2932,
+        "p95_pct": 17.18,
+        "maxe_pct": 49.3955,
+        "n": 2161
+      },
+      "load_start": {
+        "mae_pct": 10.635,
+        "rmse_pct": 13.6155,
+        "p95_pct": 27.7834,
+        "maxe_pct": 57.1103,
+        "n": 16753
+      },
+      "per_temperature": {
+        "40degC": 4.9875,
+        "n10degC": 10.2873,
+        "n20degC": 15.798
+      },
+      "mae_by_I0_bin": {
+        "0.025A": 6.231,
+        "0.275A": 8.563,
+        "0.75A": 10.038,
+        "1.5A": 11.796,
+        "3A": 12.299,
+        "6A": 10.513,
+        "14A": 8.799
+      },
+      "mae_by_V0_quartile": {
+        "[2.896,3.525]V": 10.416,
+        "[3.525,3.729]V": 10.365,
+        "[3.729,3.917]V": 12.307,
+        "[3.917,4.263]V": 7.44
+      }
+    },
+    "scenario_B": {
+      "overall": {
+        "mae_pct": 6.7775,
+        "rmse_pct": 8.3931,
+        "p95_pct": 15.7768,
+        "maxe_pct": 34.9985,
+        "n": 8010
+      },
+      "rest_start": {
+        "mae_pct": 9.386,
+        "rmse_pct": 10.5865,
+        "p95_pct": 18.5632,
+        "maxe_pct": 34.9985,
+        "n": 3141
+      },
+      "load_start": {
+        "mae_pct": 5.0948,
+        "rmse_pct": 6.6021,
+        "p95_pct": 14.8788,
+        "maxe_pct": 24.2387,
+        "n": 4869
+      },
+      "per_temperature": {
+        "40degC": 4.5132,
+        "25degC": 4.6283,
+        "10degC": 7.0456,
+        "0degC": 8.4866,
+        "n10degC": 9.2713,
+        "n20degC": 6.7614
+      },
+      "mae_by_I0_bin": {
+        "0.025A": 9.386,
+        "0.275A": 5.803,
+        "0.75A": 5.213,
+        "1.5A": 4.861,
+        "3A": 4.47,
+        "6A": 5.107,
+        "14A": 6.527
+      },
+      "mae_by_V0_quartile": {
+        "[2.967,3.291]V": 7.189,
+        "[3.291,3.405]V": 7.804,
+        "[3.405,3.493]V": 7.2,
+        "[3.493,4.185]V": 4.919
+      }
+    }
+  }
+}

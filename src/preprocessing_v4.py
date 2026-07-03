@@ -39,7 +39,7 @@ for _stream in (sys.stdout, sys.stderr):
         pass
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
-from config import PHYS_MAX_V3, PHYS_MIN_V3, R_INT_PER_TEMP  # noqa: E402
+from config import LABEL_MODE, PHYS_MAX_V3, PHYS_MIN_V3, R_INT_PER_TEMP  # noqa: E402
 
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -179,16 +179,28 @@ def build_ocv_soc_lookup(temp_name: str):
     return interp_func, q_actual
 
 
-def engineer_features_v4(df: pd.DataFrame, q_actual: float, r_int: float, ocv_lookup=None):
+def engineer_features_v4(df: pd.DataFrame, q_actual: float, r_int: float, ocv_lookup=None,
+                         label_mode: str | None = None):
     """
     Compute V_proxy and calibrated SOC ground truth.
 
     This is intentionally identical to v3 feature math. The only upstream
     difference is that df is already strict 1.0 Hz.
+
+    label_mode (Phase 5 audit): "legacy" reproduces the published labels;
+    "ohmic_corrected" removes the I*R_int drop from the segment-start voltage
+    before the OCV lookup, reducing the loaded-start soc_initial bias.
+    Defaults to config.LABEL_MODE.
     """
+    if label_mode is None:
+        label_mode = LABEL_MODE
+    if label_mode not in ("legacy", "ohmic_corrected"):
+        raise ValueError(f"Unknown label_mode: {label_mode}")
     df = df.copy()
 
     v_initial = df["Voltage"].iloc[0]
+    if label_mode == "ohmic_corrected":
+        v_initial = v_initial - df["Current"].iloc[0] * r_int
     if ocv_lookup is not None:
         soc_initial = float(np.clip(ocv_lookup(v_initial), 0.0, 1.0))
     else:

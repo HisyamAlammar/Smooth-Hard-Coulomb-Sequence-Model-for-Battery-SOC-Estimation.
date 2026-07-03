@@ -9,11 +9,11 @@ from __future__ import annotations
 
 import argparse
 import json
+import sys
 from typing import Any, Dict, List
 
 import numpy as np
 import torch
-from sklearn.metrics import r2_score
 from tqdm import tqdm
 
 from sprint48_common import (
@@ -32,54 +32,38 @@ from sprint48_common import (
     resolve_device,
 )
 
+if str(BASE_DIR) not in sys.path:
+    sys.path.insert(0, str(BASE_DIR))
+
+# Phase 1 audit fix: single metrics implementation, threshold from config.
+from analysis.soc_metrics import (  # noqa: E402
+    delta_magnitude_metrics,
+    legacy_pvr,
+    pvr_metrics,
+    regression_metrics,
+)
+
 SCENARIO_DATA_DIRS = {
     "scenario_A": BASE_DIR / "data" / "processed" / "v4_scenario_A",
     "scenario_B": BASE_DIR / "data" / "processed" / "v4_scenario_B",
 }
 
 
-def compute_pvr(y_pred: np.ndarray, I_unscaled: np.ndarray) -> Dict[str, float | int]:
-    """
-    Physics Violation Rate for sequence-to-sequence predictions.
-
-    Violation: predicted SOC increases from t-1 to t during discharge.
-    Discharge condition is deliberately explicit: I_unscaled < -0.05 A.
-    """
-    if y_pred.ndim != 2 or I_unscaled.ndim != 2:
-        raise ValueError(f"PVR expects 2D arrays, got y_pred={y_pred.shape}, I={I_unscaled.shape}")
-    if y_pred.shape != I_unscaled.shape:
-        raise ValueError(f"PVR shape mismatch: y_pred={y_pred.shape}, I={I_unscaled.shape}")
-    delta_soc = y_pred[:, 1:] - y_pred[:, :-1]
-    discharge_mask = I_unscaled[:, 1:] < -0.05
-    violations = (delta_soc > 0.0) & discharge_mask
-    discharge_steps = int(discharge_mask.sum())
-    violation_count = int(violations.sum())
-    pvr_pct = 0.0 if discharge_steps == 0 else (violation_count / discharge_steps) * 100.0
-    return {
-        "pvr_pct": float(pvr_pct),
-        "violations": violation_count,
-        "discharge_steps": discharge_steps,
-    }
-
-
 def compute_metrics(y_true: np.ndarray, y_pred: np.ndarray, I_unscaled: np.ndarray) -> Dict[str, Any]:
-    errors = y_pred - y_true
-    last_errors = y_pred[:, -1] - y_true[:, -1]
-    pvr = compute_pvr(y_pred, I_unscaled)
+    reg = regression_metrics(y_true, y_pred)
+    pvr = legacy_pvr(y_pred, I_unscaled)
     return {
-        "rmse_full_pct": float(np.sqrt(np.mean(errors ** 2)) * 100.0),
-        "mae_full_pct": float(np.mean(np.abs(errors)) * 100.0),
-        "maxe_full_pct": float(np.max(np.abs(errors)) * 100.0),
-        "r2_full": float(r2_score(y_true.reshape(-1), y_pred.reshape(-1))),
-        "rmse_last_pct": float(np.sqrt(np.mean(last_errors ** 2)) * 100.0),
-        "mae_last_pct": float(np.mean(np.abs(last_errors)) * 100.0),
-        "maxe_last_pct": float(np.max(np.abs(last_errors)) * 100.0),
-        "r2_last": float(r2_score(y_true[:, -1], y_pred[:, -1])),
+        **reg,
+        # legacy field names preserved for backward compatibility with
+        # previously published sprint48 JSON results
         "pvr_pct": pvr["pvr_pct"],
         "pvr_violations": pvr["violations"],
         "pvr_discharge_steps": pvr["discharge_steps"],
         "n_windows": int(y_true.shape[0]),
         "window": int(y_true.shape[1]),
+        # audit-mandated extensions: region/epsilon PVR + rate tracking
+        "pvr_extended": pvr_metrics(y_pred, I_unscaled),
+        "delta_magnitude": delta_magnitude_metrics(y_pred, y_true, I_unscaled),
     }
 
 

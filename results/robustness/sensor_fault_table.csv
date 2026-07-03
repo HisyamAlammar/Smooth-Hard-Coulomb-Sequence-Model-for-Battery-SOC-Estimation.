@@ -1,0 +1,17 @@
+fault,value,model,rmse_pct,mae_pct,maxe_pct,pvr_measured_disch_eps0,pvr_true_disch_eps0,pvr_true_rest_eps0,rest_drift_pct_per_hour
+clean,0.0,hard_coulomb_lstm,12.7107,9.8736,55.1126,0.0,0.0,0.0,0.0
+clean,0.0,vanilla_lstm,13.3712,10.4838,51.0242,49.9694,49.9694,99.9719,-617.227
+offset,0.05,hard_coulomb_lstm,12.9414,10.0414,55.8448,0.0,0.0,7.4623,0.143
+offset,-0.05,hard_coulomb_lstm,12.4849,9.7083,54.4806,0.0,0.0,7.259,-0.149
+offset,0.1,hard_coulomb_lstm,13.1784,10.2137,56.6381,0.0,0.0,100.0,1.611
+offset,-0.1,hard_coulomb_lstm,12.2658,9.5474,53.7881,0.0,0.0,100.0,-1.671
+offset,0.5,hard_coulomb_lstm,15.229,11.7078,62.0085,0.0,25.7445,100.0,7.944
+offset,0.5,vanilla_lstm,16.4451,12.9696,59.7842,41.0342,48.1686,99.9788,-728.218
+offset,-0.5,hard_coulomb_lstm,10.7982,8.4524,48.9571,0.0,0.0,100.0,-8.862
+offset,-0.5,vanilla_lstm,11.2677,8.7466,48.0265,53.4002,52.3454,99.9697,-488.96
+offset,1.0,hard_coulomb_lstm,18.0089,13.8138,68.1349,0.0,36.5936,100.0,15.549
+offset,-1.0,hard_coulomb_lstm,9.9425,7.8426,45.5406,0.0,0.0,100.0,-18.691
+gauss_noise,0.1,hard_coulomb_lstm,12.7233,9.8785,55.5884,0.0,1.2699,61.9121,-0.014
+gauss_noise,0.5,hard_coulomb_lstm,13.1561,10.063,64.428,0.0,9.8918,92.0739,-0.014
+stuck_zero,0.0,hard_coulomb_lstm,22.3189,15.519,88.0025,0.0,0.0,0.0,0.0
+stuck_zero,0.0,vanilla_lstm,23.9521,17.0854,95.0927,0.0,33.1171,99.9714,-434.3

@@ -1,0 +1,9 @@
+variant,scenario,rmse_pct,mae_pct,maxe_pct,pvr_discharge_eps0,rmse_n20degC,maxe_n20degC,rmse_n10degC,maxe_n10degC,seed
+HC_LSTM_anchor_first(prod),scenario_A,12.7107,9.8736,55.1126,0.0,17.8587,55.1126,11.9092,52.0541,prod
+HC_LSTM_anchor_last,scenario_A,13.3666,10.4525,50.2869,0.0,19.4528,50.2869,12.0717,36.6119,42
+HC_LSTM_anchor_last,scenario_A,11.469,9.1757,38.5041,0.0,15.573,38.5041,10.4979,36.5628,123
+HC_LSTM_anchor_last,scenario_A,11.0875,8.878,37.0053,0.0,14.2497,37.0053,10.0186,35.8059,2026
+HC_LSTM_anchor_pooled,scenario_A,12.184,9.7232,47.5106,0.0,16.4257,47.5106,10.651,40.6007,42
+HC_LSTM_anchor_pooled,scenario_A,20.0034,15.0113,66.5996,0.0,31.4712,66.5996,16.8425,43.1037,123
+HC_LSTM_anchor_pooled,scenario_A,12.3927,9.8631,48.2335,0.0,17.0245,48.2335,10.9766,42.8001,2026
+HC_LSTM_recursive_infer(prod),scenario_A,9.2251,7.3136,31.1895,0.0,6.6815,17.2547,6.5983,16.6512,prod

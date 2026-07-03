@@ -63,6 +63,26 @@ R_INT_PER_TEMP = {
 # |I| < THRESHOLD → Rest;  I < -THRESHOLD → Discharge;  I > THRESHOLD → Charge
 CURRENT_THRESHOLD = 0.05
 
+# ── Evaluation-layer single source of truth (Phase 1 audit fix) ─────
+# The SAME threshold gates the model's routing and the PVR audit; any
+# divergence between the two silently breaks the structural-PVR argument,
+# so evaluation code must import these instead of hardcoding values.
+CURRENT_THRESHOLD_A = CURRENT_THRESHOLD          # Amperes, alias for eval code
+# Dead-band epsilons (SOC fraction per 1 s step) for epsilon-PVR curves.
+# 0.0005 = 0.05 %SOC/step; envelope scale at 1 A is ~1.4e-4 SOC/step.
+PVR_EPSILONS = [0.0, 0.0005, 0.001, 0.0025, 0.005, 0.01]
+
+# ── Label generation mode (Phase 5 audit) ───────────────────────────
+# "legacy"          : soc_initial = OCV_lookup(raw V of first segment sample),
+#                     even when the segment starts under load (48/103 segments;
+#                     mean 2.4 %SOC bias, max 33.5 %, ohmic-only lower bound).
+# "ohmic_corrected" : soc_initial = OCV_lookup(V0 - I0 * R_int(T)); removes the
+#                     Ohmic share of the loaded-start bias (diffusion
+#                     overpotential remains uncorrected).
+# All published v4 tensors were generated with "legacy"; switching modes
+# requires regenerating data/processed and retraining every model.
+LABEL_MODE = "legacy"
+
 # Physics-Informed Scaling bounds for v3 (V_proxy replaces raw V_t)
 # V_proxy has a narrower, more stable range since Ohmic drop is removed
 PHYS_MIN_V3 = [2.5,  -20.0, -20.0, -2.0, -20.0]  # [V_proxy, I, T, dV_proxy/dt, dI/dt]

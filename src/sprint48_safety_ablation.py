@@ -15,6 +15,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import sys
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Dict, Iterable, List
@@ -35,13 +36,25 @@ from sprint48_common import (
     resolve_device,
 )
 
+if str(BASE_DIR) not in sys.path:
+    sys.path.insert(0, str(BASE_DIR))
+
+# Phase 1 audit fix: shared metrics; threshold comes from config, not a local
+# constant, so the audit condition cannot drift from the model's routing rule.
+from analysis.soc_metrics import (  # noqa: E402
+    delta_magnitude_metrics,
+    legacy_pvr,
+    pvr_metrics,
+)
+from config import CURRENT_THRESHOLD_A  # noqa: E402
+
 SCENARIO_DATA_DIRS = {
     "scenario_A": BASE_DIR / "data" / "processed" / "v4_scenario_A",
     "scenario_B": BASE_DIR / "data" / "processed" / "v4_scenario_B",
 }
 
 DEFAULT_ETAS = (1.0, 1.5, 2.0, 3.0)
-DISCHARGE_THRESHOLD_A = -0.05
+DISCHARGE_THRESHOLD_A = -CURRENT_THRESHOLD_A
 
 
 @dataclass(frozen=True)
@@ -50,29 +63,6 @@ class PredictionBundle:
     y_pred: np.ndarray
     I_unscaled: np.ndarray
     anchor_raw: np.ndarray | None
-
-
-def compute_pvr(y_pred: np.ndarray, I_unscaled: np.ndarray) -> Dict[str, float | int]:
-    """
-    Sequence-to-sequence PVR using the explicit paper condition:
-    discharge iff I_unscaled < -0.05 A.
-    """
-    if y_pred.ndim != 2 or I_unscaled.ndim != 2:
-        raise ValueError(f"PVR expects 2D arrays, got y={y_pred.shape}, I={I_unscaled.shape}")
-    if y_pred.shape != I_unscaled.shape:
-        raise ValueError(f"PVR shape mismatch: y={y_pred.shape}, I={I_unscaled.shape}")
-
-    delta_soc = y_pred[:, 1:] - y_pred[:, :-1]
-    discharge_mask = I_unscaled[:, 1:] < DISCHARGE_THRESHOLD_A
-    violations = (delta_soc > 0.0) & discharge_mask
-    discharge_steps = int(discharge_mask.sum())
-    violation_count = int(violations.sum())
-    pvr_pct = 0.0 if discharge_steps == 0 else (violation_count / discharge_steps) * 100.0
-    return {
-        "pvr_pct": float(pvr_pct),
-        "violations": violation_count,
-        "discharge_steps": discharge_steps,
-    }
 
 
 def error_summary_pct(abs_error_fraction: np.ndarray) -> Dict[str, float]:
@@ -90,7 +80,7 @@ def error_summary_pct(abs_error_fraction: np.ndarray) -> Dict[str, float]:
 
 def regression_metrics(y_true: np.ndarray, y_pred: np.ndarray, I_unscaled: np.ndarray) -> Dict[str, float | int]:
     errors = y_pred - y_true
-    pvr = compute_pvr(y_pred, I_unscaled)
+    pvr = legacy_pvr(y_pred, I_unscaled)
     return {
         "rmse_pct": float(np.sqrt(np.mean(errors**2)) * 100.0),
         "mae_pct": float(np.mean(np.abs(errors)) * 100.0),
@@ -98,6 +88,8 @@ def regression_metrics(y_true: np.ndarray, y_pred: np.ndarray, I_unscaled: np.nd
         "pvr_pct": pvr["pvr_pct"],
         "pvr_violations": pvr["violations"],
         "pvr_discharge_steps": pvr["discharge_steps"],
+        "pvr_extended": pvr_metrics(y_pred, I_unscaled),
+        "delta_magnitude": delta_magnitude_metrics(y_pred, y_true, I_unscaled),
     }
 
 

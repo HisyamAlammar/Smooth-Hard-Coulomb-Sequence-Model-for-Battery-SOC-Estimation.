@@ -1,0 +1,44 @@
+{
+  "provenance": {
+    "timestamp": "2026-07-03T06:46:38",
+    "scenario": "scenario_A",
+    "split": "test",
+    "data_source": "data\\processed\\v4_scenario_A",
+    "checkpoint": "outputs/v7_final/vanilla_lstm_*.pt",
+    "seed": 42,
+    "config": {
+      "current_threshold_A": 0.05,
+      "pvr_epsilons": [
+        0.0,
+        0.0005,
+        0.001,
+        0.0025,
+        0.005,
+        0.01
+      ],
+      "q_nominal_Ah": 3.0
+    },
+    "model": "vanilla_lstm",
+    "note": "both scenarios probed"
+  },
+  "correlations": {
+    "scenario_A": {
+      "corr_delta_pred__V_proxy": 0.2033,
+      "corr_delta_pred__Current": -0.0437,
+      "corr_delta_pred__Temperature": 0.0461,
+      "corr_delta_pred__dV_proxy_dt": -0.002,
+      "corr_delta_pred__dI_dt": -0.0175,
+      "corr_delta_pred__delta_true": -0.0365,
+      "lag1_autocorr_delta_pred": 0.8424
+    },
+    "scenario_B": {
+      "corr_delta_pred__V_proxy": 0.0498,
+      "corr_delta_pred__Current": -0.009,
+      "corr_delta_pred__Temperature": -0.0116,
+      "corr_delta_pred__dV_proxy_dt": 0.0148,
+      "corr_delta_pred__dI_dt": -0.0305,
+      "corr_delta_pred__delta_true": -0.0009,
+      "lag1_autocorr_delta_pred": 0.8018
+    }
+  }
+}
