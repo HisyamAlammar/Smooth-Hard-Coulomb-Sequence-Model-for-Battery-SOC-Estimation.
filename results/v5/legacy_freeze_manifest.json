@@ -1,0 +1,59 @@
+{
+  "frozen": "2026-07-03",
+  "git_commit": "3c4ba9bf429d42248217395f19865eff4d8653e4",
+  "git_tag": "audit-campaign-v4-complete",
+  "dataset_version": "v4_legacy",
+  "dataset_paths": ["data/processed/v4_scenario_A", "data/processed/v4_scenario_B"],
+  "label_mode": "legacy",
+  "decimation_mode": "first_sample",
+  "production_checkpoints": [
+    "outputs/v7_final/vanilla_lstm_scenario_A.pt",
+    "outputs/v7_final/vanilla_lstm_scenario_B.pt",
+    "outputs/v7_final/hard_coulomb_lstm_scenario_A.pt",
+    "outputs/v7_final/hard_coulomb_lstm_scenario_B.pt",
+    "outputs/v8_tcn_redemption/sprint52/hard_coulomb_tcn_scenario_A.pt",
+    "outputs/v8_tcn_redemption/sprint52/hard_coulomb_tcn_scenario_B.pt",
+    "results/model_variants/checkpoints/hc_anchor_last_scenario_A_seed{42,123,2026}.pt",
+    "results/model_variants/checkpoints/hc_anchor_pooled_scenario_A_seed{42,123,2026}.pt"
+  ],
+  "campaign_outputs": {
+    "reports": ["reports/phase0_repo_inspection.md through reports/phase9_edge_quantization_report.md",
+                "reports/claims_register.md", "reports/final_code_audit_fix_report.md"],
+    "aggregates": ["results/final_model_comparison.csv", "results/final_model_comparison.json"],
+    "metrics": "results/metrics/", "baselines": "results/baselines/",
+    "diagnostics": "results/diagnostics/", "model_variants": "results/model_variants/",
+    "robustness": "results/robustness/", "edge": "results/edge/", "figures": "results/figures/"
+  },
+  "key_v4_metrics": {
+    "scenario_A": {
+      "vanilla_lstm": {"rmse_pct": 13.3712, "maxe_pct": 51.0242, "pvr_disch_eps0": 49.9694},
+      "hard_coulomb_lstm": {"rmse_pct": 12.7107, "maxe_pct": 55.1126, "pvr_disch_eps0": 0.0, "n20_rmse_pct": 17.8587},
+      "hard_coulomb_tcn": {"rmse_pct": 11.4592, "maxe_pct": 46.7303},
+      "null_ocv_coulomb_ocv25_qnom": {"rmse_pct": 13.2436, "maxe_pct": 86.9666},
+      "vanilla_posthoc_clamp": {"rmse_pct": 25.5561},
+      "hc_lstm_recursive_infer": {"rmse_pct": 9.2251, "maxe_pct": 31.1895, "n20_rmse_pct": 6.6815, "n20_maxe_pct": 17.2547},
+      "hc_lstm_oracle_anchor_ref": {"rmse_pct": 0.5379, "maxe_pct": 5.0462, "n20_rmse_pct": 0.4964},
+      "ekf_ocv_rint_best": {"rmse_pct": 13.0002, "maxe_pct": 99.048, "pvr_disch_eps0": 30.2887}
+    },
+    "scenario_B": {
+      "vanilla_lstm": {"rmse_pct": 7.2806}, "hard_coulomb_lstm": {"rmse_pct": 8.5667, "maxe_pct": 34.9985},
+      "null_ocv_coulomb_ocv25_qnom": {"rmse_pct": 7.5572}, "ekf_ocv_rint_best": {"rmse_pct": 7.0477}
+    }
+  },
+  "key_v4_conclusions": [
+    "PVR 0.00% is structural (forward-pass identity), not empirical",
+    "HC-LSTM barely beats null OOD (12.71 vs 13.24), loses in-distribution (8.57 vs 7.56)",
+    "Training-through-constraint decisively beats post-hoc clamp (12.71 vs 25.56)",
+    "Cold failure is anchor-dominated (~96% of RMSE; oracle anchor: -20C 17.86->0.50)",
+    "Recursive carried-anchor inference: RMSE 12.71->9.23, -20C 17.86->6.68, but 40C degrades 6.90->13.06",
+    "Sensor offset +0.5A: audited PVR 0.00% while true-frame PVR 25.7%",
+    "Labels contaminated: 48/103 loaded-start segments, soc_initial bias mean 2.4% max 33.5%; decimation sign conflicts 2-4%, envelope unsatisfiable 7-13%",
+    "Windowed OCV-Rint EKF does not rescue cold anchors (-20C 18.4%); beats HC in-distribution (7.05%)",
+    "Quantization: invariant survives dynamic int8/monotone grids/f16 accumulation; per-timestep asymmetric requantization breaks it"
+  ],
+  "reproduction_check": {
+    "date": "2026-07-03",
+    "metric_sanity_tests": "7/7 PASS (analysis/test_soc_metrics.py)",
+    "legacy_field_reproduction": "verified in v4 campaign Phase 1 (bit-identical legacy PVR/RMSE)"
+  }
+}

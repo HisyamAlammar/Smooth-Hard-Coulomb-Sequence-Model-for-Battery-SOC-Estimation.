@@ -1,0 +1,9 @@
+model,scenario,v4_rmse_pct,v5c_rmse_pct,rmse_delta_pp,v4_maxe_pct,v5c_maxe_pct,v4_n20_rmse,v5c_n20_rmse
+hard_coulomb_tcn,scenario_A,11.4592,10.9496,-0.5096,46.7303,43.2938,,16.6462
+hard_coulomb_lstm,scenario_A,12.7107,11.0493,-1.6614,55.1126,46.1952,17.8587,16.756
+vanilla_lstm,scenario_A,13.3712,11.5921,-1.7791,51.0242,46.8817,,17.3787
+null[ocv25_qnom],scenario_A,13.2436,13.0297,-0.2139,86.9666,60.9376,,19.5747
+vanilla+posthoc_clamp,scenario_A,25.5561,25.0261,-0.53,,46.8818,,23.1923
+vanilla_lstm,scenario_B,7.2806,6.3485,-0.9321,,50.637,,8.8031
+null[ocv25_qnom],scenario_B,7.5572,7.5278,-0.0294,,94.7159,,14.319
+hard_coulomb_lstm,scenario_B,8.5667,9.8729,1.3062,34.9985,35.3573,,7.8601

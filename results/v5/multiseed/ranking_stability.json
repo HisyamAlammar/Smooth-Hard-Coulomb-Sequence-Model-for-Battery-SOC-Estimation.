@@ -1,0 +1,22 @@
+{
+  "scenario_A": {
+    "winner_by_seed": {
+      "1": "hc_anchor_last",
+      "2": "hc_anchor_last",
+      "3": "hc_anchor_last",
+      "4": "hc_anchor_last",
+      "5": "hard_coulomb_lstm"
+    },
+    "winner_stable": false
+  },
+  "scenario_B": {
+    "winner_by_seed": {
+      "1": "hc_anchor_pooled",
+      "2": "hc_anchor_pooled",
+      "3": "hc_anchor_last",
+      "4": "hc_anchor_last",
+      "5": "hc_anchor_last"
+    },
+    "winner_stable": false
+  }
+}

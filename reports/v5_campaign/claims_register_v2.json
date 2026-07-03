@@ -1,0 +1,196 @@
+{
+  "generated": "2026-07-03T16:04:57",
+  "version": 2,
+  "supersedes": "reports/claims_register.md",
+  "language_constraints": [
+    "'By construction' for PVR; never as achievement in results tables",
+    "No 'suitable for edge MCUs' without hardware numbers",
+    "No 'functional safety' beyond 'safety-motivated'",
+    "Sensor faults = characterized envelope",
+    "Single-seed numbers always labeled; means quoted +- std",
+    "eta* evidence quoted as single-checkpoint until multi-seed re-run"
+  ],
+  "claims": [
+    {
+      "id": 1,
+      "claim": "HC enforces sign-consistency w.r.t. measured current (structural)",
+      "status": "SUPPORTED",
+      "delta_v1": "unchanged",
+      "evidence": "PVR==0 across all v5c seeds, policies, eta values, scenarios",
+      "sources": [
+        "P2",
+        "P3",
+        "P4",
+        "P5",
+        "P6"
+      ]
+    },
+    {
+      "id": 2,
+      "claim": "PVR 0.00% stated 'by construction', not as result",
+      "status": "SUPPORTED",
+      "delta_v1": "unchanged",
+      "evidence": "every v5 table footnotes it",
+      "sources": [
+        "P2"
+      ]
+    },
+    {
+      "id": 3,
+      "claim": "HC improves RMSE over baselines (general)",
+      "status": "SUPPORTED_FOR_ANCHOR_VARIANTS",
+      "delta_v1": "upgraded",
+      "evidence": "anchor_last/pooled beat vanilla AND null both scenarios all 5 seeds (A 9.99+-1.09 vs 11.35/13.03; B 4.74+-0.31 vs 6.20/7.53); original HC-LSTM loses in-distribution (10.63+-0.60 vs 7.53)",
+      "sources": [
+        "P2",
+        "P3"
+      ]
+    },
+    {
+      "id": 4,
+      "claim": "HC beats null OCV+Coulomb",
+      "status": "SUPPORTED_ANCHOR_VARIANTS_PARTIAL_ORIGINAL",
+      "delta_v1": "upgraded",
+      "evidence": "anchor_last: everywhere every seed; original HC OOD only (1.98pp, up from 0.53 on v4 labels)",
+      "sources": [
+        "P2",
+        "P3"
+      ]
+    },
+    {
+      "id": 5,
+      "claim": "HC beats post-hoc clamp",
+      "status": "SUPPORTED",
+      "delta_v1": "unchanged",
+      "evidence": "clamp collapse on v5c: 25.0/30.1% vs HC <=10.9/10.6",
+      "sources": [
+        "P2"
+      ]
+    },
+    {
+      "id": 6,
+      "claim": "-20C error is anchor-dominated",
+      "status": "SUPPORTED",
+      "delta_v1": "strengthened",
+      "evidence": "oracle-anchor null 0.03% vs learned 15-17%; interventional: carried anchor 16.75->11.11 zero retraining; calibrated recursive 3.59%",
+      "sources": [
+        "P2",
+        "P4",
+        "P5"
+      ]
+    },
+    {
+      "id": 7,
+      "claim": "Windowed evaluation reflects deployment",
+      "status": "UNSUPPORTED",
+      "delta_v1": "refined",
+      "evidence": "protocol-dependent; frontier quantified: calibrated-carried 4.43% vs windowed 11.05%; both protocols must be reported",
+      "sources": [
+        "P4",
+        "P5"
+      ]
+    },
+    {
+      "id": 8,
+      "claim": "Labels are trustworthy",
+      "status": "LARGELY_RESOLVED_BY_V5C",
+      "delta_v1": "upgraded",
+      "evidence": "v5c corrects ohmic-anchor bias + decimation conflicts; v4->v5c all models improve Scen A (-0.2..-1.8pp); null MaxE 87->61; ohmic-only correction is lower bound",
+      "sources": [
+        "P1",
+        "P2"
+      ]
+    },
+    {
+      "id": 9,
+      "claim": "Edge deployment feasible (parameter-level)",
+      "status": "PARTIALLY_SUPPORTED",
+      "delta_v1": "unchanged",
+      "evidence": "54.6k params / 218KB / MCU-class MMAC; no hardware validation",
+      "sources": [
+        "v4_P9"
+      ]
+    },
+    {
+      "id": 10,
+      "claim": "PVR survives quantization (path-dependent)",
+      "status": "PARTIALLY_SUPPORTED",
+      "delta_v1": "unchanged",
+      "evidence": "single-scale-accumulator requirement stands",
+      "sources": [
+        "v4_P9"
+      ]
+    },
+    {
+      "id": 11,
+      "claim": "Functional safety supported",
+      "status": "UNSUPPORTED",
+      "delta_v1": "unchanged",
+      "evidence": "only 'safety-motivated architectural property' allowed",
+      "sources": [
+        "v4_P7"
+      ]
+    },
+    {
+      "id": 12,
+      "claim": "Sensor-fault robustness",
+      "status": "UNSUPPORTED_AS_ROBUSTNESS_SUPPORTED_AS_CHARACTERIZATION",
+      "delta_v1": "unchanged",
+      "evidence": "characterized failure envelope",
+      "sources": [
+        "v4_P7"
+      ]
+    },
+    {
+      "id": 13,
+      "claim": "Vanilla baseline fair",
+      "status": "SUPPORTED",
+      "delta_v1": "unchanged",
+      "evidence": "implementation verified; multi-seed sigma 0.18-0.27 reinforces",
+      "sources": [
+        "P3"
+      ]
+    },
+    {
+      "id": 14,
+      "claim": "Anchor redesign (last/pooled) necessary+sufficient to beat null in-distribution",
+      "status": "SUPPORTED",
+      "delta_v1": "new",
+      "evidence": "original HC fails Scen B 5/5 seeds (early-stop ~20ep, 10.63+-0.60); anchor_last/pooled 4.74/4.93 vs null 7.53 every seed",
+      "sources": [
+        "P3"
+      ]
+    },
+    {
+      "id": 15,
+      "claim": "Delta-path rate deficit is envelope mis-calibration, correctable at inference (eta*)",
+      "status": "SUPPORTED_SINGLE_SEED",
+      "delta_v1": "new",
+      "evidence": "eta 1.5->2.0: ratio 0.751->1.002, recursive RMSE 11.78->4.43, n20 3.59; equivalent 1.75*temp-aware; retraining does NOT self-calibrate (17.6/14.9%)",
+      "sources": [
+        "P5"
+      ]
+    },
+    {
+      "id": 16,
+      "claim": "Calibrated recursive HC beats continuous EKF without tuning sensitivity",
+      "status": "SUPPORTED",
+      "delta_v1": "new",
+      "evidence": "best EKF 6.85% vs HC 4.43%; EKF spans 6.8-39.1% over R decades; EKF PVR 4.9-39.6% vs HC 0%",
+      "sources": [
+        "P6"
+      ]
+    },
+    {
+      "id": 17,
+      "claim": "Part of v4 catastrophic-MaxE narrative was label artifact",
+      "status": "SUPPORTED",
+      "delta_v1": "new",
+      "evidence": "null Scen-A MaxE 87->61 from label correction alone; corrected gap remains (36.5-46.5 vs 60.9)",
+      "sources": [
+        "P1",
+        "P2"
+      ]
+    }
+  ]
+}

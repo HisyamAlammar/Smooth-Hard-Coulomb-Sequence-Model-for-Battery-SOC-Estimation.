@@ -1,0 +1,9 @@
+variant,scenario,status,label_mode,decimation_mode,segments,train_windows,val_windows,test_windows,label_shift_vs_v4_mean_pct,label_shift_vs_v4_max_pct,leakage_overlaps
+v4,A,OK,legacy,first_sample,103,15641,9084,18914,0.0,0.0,0
+v4,B,OK,legacy,first_sample,103,30457,3538,8010,0.0,0.0,0
+v5a,A,OK,ohmic_corrected,first_sample,103,15641,9084,18914,3.5317,93.5793,0
+v5a,B,OK,ohmic_corrected,first_sample,103,30457,3538,8010,1.0881,38.0451,0
+v5b,A,OK,legacy,mean_per_second,103,15641,9084,18914,1.0919,12.5464,0
+v5b,B,OK,legacy,mean_per_second,103,30457,3538,8010,0.8068,12.4754,0
+v5c,A,OK,ohmic_corrected,mean_per_second,103,15641,9084,18914,1.3472,16.2429,0
+v5c,B,OK,ohmic_corrected,mean_per_second,103,30457,3538,8010,0.6839,16.2425,0

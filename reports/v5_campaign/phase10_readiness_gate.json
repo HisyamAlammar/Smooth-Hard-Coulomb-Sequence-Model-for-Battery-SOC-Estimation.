@@ -1,0 +1,267 @@
+{
+  "generated": "2026-07-03",
+  "passed": 52,
+  "total": 52,
+  "gates": [
+    {
+      "name": "artifact:legacy_freeze_manifest.json",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "artifact:dataset_variant_comparison.json",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "artifact:headline_models/runs_v5c_A-B_42.json",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "artifact:headline_models/v4_vs_v5_comparison.csv",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "artifact:multiseed/runs_A.json",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "artifact:multiseed/runs_B.json",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "artifact:multiseed/multiseed_summary.csv",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "artifact:multiseed/ranking_stability.json",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "artifact:recursive_inference/recursive_policy_results.json",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "artifact:delta_calibration/eta_gamma_sweep.json",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "artifact:ekf_ecm/continuous_ekf_results.json",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "artifact:final_ablation_matrix.csv",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "artifact:final_v5_model_comparison.csv",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "artifact:baselines/deterministic_baselines_v5c.json",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "figure:v4_vs_v5_rmse_by_model",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "figure:v5_temperature_breakdown",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "figure:multiseed_rmse_boxplot",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "figure:multiseed_maxe_boxplot",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "figure:recursive_policy_temperature_breakdown",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "figure:cold_sequence_recursive_case_study",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "figure:hot_sequence_recursive_failure_case",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "figure:eta_vs_rmse_by_temperature",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "figure:eta_vs_delta_ratio",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "figure:eta_vs_recursive_drift",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "figure:recursive_vs_ekf_temperature_breakdown",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "figure:ekf_voltage_residual_case_study",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "report:phase0_legacy_freeze_manifest",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "report:phase1_dataset_v5_report",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "report:phase2_v5_retrain_headline_report",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "report:phase3_multiseed_report",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "report:phase4_recursive_policies_report",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "report:phase5_delta_calibration_report",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "report:phase6_ekf_baselines_report",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "report:phase7_final_ablation_model_card",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "report:claims_register_v2",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "report:phase9_final_v5_report",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "report:claims_register_v2.json",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "num:anchor_last_A_mean=9.993",
+      "pass": true,
+      "detail": "9.993"
+    },
+    {
+      "name": "num:anchor_last_B_mean=4.7432",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "num:hc_B_mean=10.6291",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "num:eta2_rec_rmse=4.4318",
+      "pass": true,
+      "detail": "4.4318"
+    },
+    {
+      "name": "num:eta2_ratio=1.0018",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "num:eta2_n20=3.5936",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "num:best_ekf_rmse=6.8485",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "num:best_ekf_pvr=5.4755",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "num:load_gated_rmse=8.409",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "prov:recursive_inference/recursive_policy_results.json",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "prov:delta_calibration/eta_gamma_sweep.json",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "prov:ekf_ecm/continuous_ekf_results.json",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "pvr:all_HC_rows_zero",
+      "pass": true,
+      "detail": "[]"
+    },
+    {
+      "name": "claims:17",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "claims:constraints>=6",
+      "pass": true,
+      "detail": ""
+    }
+  ]
+}

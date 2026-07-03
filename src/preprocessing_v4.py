@@ -253,18 +253,52 @@ def to_strict_1hz_segments(
     source_id: str,
     profile_code_start: int,
     min_len: int = WINDOW,
+    decimation_mode: str = "first_sample",
 ) -> Tuple[List[pd.DataFrame], int, Dict[str, int]]:
     """
-    Collapse duplicate seconds by keeping the first row, then split at any
-    remaining time gaps. Every returned segment is guaranteed strict 1 Hz.
+    Collapse each raw second to one row, then split at any remaining time
+    gaps. Every returned segment is guaranteed strict 1 Hz.
+
+    decimation_mode (v5 campaign):
+      "first_sample"                 -- legacy: first raw sample per second.
+      "mean_per_second"              -- V/I/T replaced by intra-second means
+                                        (anti-aliased), Capacity by the last
+                                        sample (it is an integral state).
+      "integrated_current_per_second"-- only Current replaced by the intra-
+                                        second mean (charge-preserving);
+                                        V/T stay first-sample.
+    All modes keep the first row's remaining columns, so downstream feature
+    math and window logic are untouched.
     """
     if df.empty:
         return [], profile_code_start, {"raw_rows": 0, "dedup_rows": 0, "segments": 0, "short_segments": 0}
+    if decimation_mode not in ("first_sample", "mean_per_second", "integrated_current_per_second"):
+        raise ValueError(f"Unknown decimation_mode: {decimation_mode}")
 
     raw_rows = len(df)
     work = df.copy().sort_values("time_sec").reset_index(drop=True)
     work["_second"] = np.floor(work["time_sec"].to_numpy(dtype=np.float64) + 1e-9).astype(np.int64)
+
+    if decimation_mode != "first_sample":
+        grouped = work.groupby("_second", sort=True)
+        agg_current = grouped["Current"].mean()
+        agg_voltage = grouped["Voltage"].mean() if "Voltage" in work.columns else None
+        agg_temp = grouped["Temperature"].mean() if "Temperature" in work.columns else None
+        agg_cap = grouped["Capacity"].last() if "Capacity" in work.columns else None
+
     work = work.drop_duplicates("_second", keep="first").sort_values("_second").reset_index(drop=True)
+
+    if decimation_mode != "first_sample":
+        sec_index = work["_second"].to_numpy()
+        work["Current"] = agg_current.loc[sec_index].to_numpy()
+        if agg_cap is not None:
+            work["Capacity"] = agg_cap.loc[sec_index].to_numpy()
+        if decimation_mode == "mean_per_second":
+            if agg_voltage is not None:
+                work["Voltage"] = agg_voltage.loc[sec_index].to_numpy()
+            if agg_temp is not None:
+                work["Temperature"] = agg_temp.loc[sec_index].to_numpy()
+
     work["time_sec"] = work["_second"].astype(np.float64)
 
     gaps = work["_second"].diff().fillna(1).ne(1)
@@ -462,9 +496,27 @@ def verify_no_split_leakage(splits: Dict[str, Dict[str, np.ndarray]]) -> Dict[st
 # =====================================================================
 # 5. Main pipeline v4
 # =====================================================================
-def run_pipeline_v4(scenario: str = "A", window: int = WINDOW, stride: int = STRIDE) -> None:
+def run_pipeline_v4(
+    scenario: str = "A",
+    window: int = WINDOW,
+    stride: int = STRIDE,
+    label_mode: str | None = None,
+    decimation_mode: str | None = None,
+    variant_name: str = "v4",
+) -> None:
+    """
+    variant_name controls the output directory (data/processed/<variant>_scenario_X).
+    "v4" with default modes reproduces the legacy pipeline exactly; v5 variants
+    change ONLY label_mode / decimation_mode (window, stride, features, splits
+    unchanged).
+    """
+    if label_mode is None:
+        label_mode = LABEL_MODE
+    if decimation_mode is None:
+        decimation_mode = "first_sample"
     print(f"{'=' * 72}")
-    print(f"  Pipeline v4: 1Hz + Split-Before-Windowing -- Scenario {scenario}")
+    print(f"  Pipeline {variant_name}: 1Hz + Split-Before-Windowing -- Scenario {scenario}")
+    print(f"  label_mode={label_mode} | decimation_mode={decimation_mode}")
     print("  Feature math locked: V_proxy = V_t - I*R_int")
     print(f"{'=' * 72}")
 
@@ -481,7 +533,10 @@ def run_pipeline_v4(scenario: str = "A", window: int = WINDOW, stride: int = STR
     profile_code = 1
 
     metadata = {
-        "version": "v4",
+        "version": variant_name,
+        "dataset_version": variant_name,
+        "label_mode": label_mode,
+        "decimation_mode": decimation_mode,
         "method": "V_proxy + strict 1Hz + split-before-windowing",
         "feature_cols": FEATURE_COLS_V4,
         "window": window,
@@ -541,6 +596,7 @@ def run_pipeline_v4(scenario: str = "A", window: int = WINDOW, stride: int = STR
                     source_id=source_id,
                     profile_code_start=profile_code,
                     min_len=window,
+                    decimation_mode=decimation_mode,
                 )
 
                 metadata["profile_stats"][temp]["files_processed"] += 1
@@ -553,6 +609,7 @@ def run_pipeline_v4(scenario: str = "A", window: int = WINDOW, stride: int = STR
                         q_actual=q_actual,
                         r_int=r_int,
                         ocv_lookup=ocv_lookup,
+                        label_mode=label_mode,
                     )
                     soc_initials.append(soc_init)
 
@@ -662,7 +719,7 @@ def run_pipeline_v4(scenario: str = "A", window: int = WINDOW, stride: int = STR
     if len(y_test) > 0:
         print(f"    Test : mean={y_test.mean():.4f}, std={y_test.std():.4f}")
 
-    out_dir = os.path.join(DATA_PROC, f"v4_scenario_{scenario}")
+    out_dir = os.path.join(DATA_PROC, f"{variant_name}_scenario_{scenario}")
     os.makedirs(out_dir, exist_ok=True)
 
     save_map = {

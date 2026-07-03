@@ -1,0 +1,211 @@
+{
+  "version": "v5b",
+  "dataset_version": "v5b",
+  "label_mode": "legacy",
+  "decimation_mode": "mean_per_second",
+  "method": "V_proxy + strict 1Hz + split-before-windowing",
+  "feature_cols": [
+    "V_proxy",
+    "Current",
+    "Temperature",
+    "dV_proxy_dt",
+    "dI_dt"
+  ],
+  "window": 100,
+  "stride": 10,
+  "sampling_hz": 1.0,
+  "split_before_windowing": true,
+  "r_int_per_temp": {
+    "40degC": 0.01651,
+    "25degC": 0.01986,
+    "10degC": 0.02875,
+    "0degC": 0.04008,
+    "n10degC": 0.06219,
+    "n20degC": 0.10983
+  },
+  "q_actual": {
+    "0degC": 2.5764,
+    "10degC": 2.6102,
+    "25degC": 2.7744,
+    "40degC": 2.718,
+    "n10degC": 2.4919,
+    "n20degC": 2.3304
+  },
+  "ocv_points": {
+    "0degC": "PCHIP",
+    "10degC": "PCHIP",
+    "25degC": "PCHIP",
+    "40degC": "PCHIP",
+    "n10degC": "PCHIP",
+    "n20degC": "PCHIP"
+  },
+  "soc_initial_stats": {
+    "0degC": {
+      "mean": 0.7948,
+      "min": 0.1099,
+      "max": 0.9996,
+      "count": 17
+    },
+    "10degC": {
+      "mean": 0.7285,
+      "min": 0.127,
+      "max": 1.0,
+      "count": 18
+    },
+    "25degC": {
+      "mean": 0.9233,
+      "min": 0.567,
+      "max": 1.0,
+      "count": 15
+    },
+    "40degC": {
+      "mean": 0.801,
+      "min": 0.14,
+      "max": 1.0,
+      "count": 20
+    },
+    "n10degC": {
+      "mean": 0.8577,
+      "min": 0.1457,
+      "max": 0.9993,
+      "count": 18
+    },
+    "n20degC": {
+      "mean": 0.8457,
+      "min": 0.099,
+      "max": 0.9993,
+      "count": 15
+    }
+  },
+  "profile_stats": {
+    "0degC": {
+      "raw_rows": 777984,
+      "dedup_rows": 77811,
+      "segments": 17,
+      "short_segments": 0,
+      "files_processed": 11
+    },
+    "10degC": {
+      "raw_rows": 847063,
+      "dedup_rows": 84703,
+      "segments": 18,
+      "short_segments": 4,
+      "files_processed": 11
+    },
+    "25degC": {
+      "raw_rows": 927072,
+      "dedup_rows": 92725,
+      "segments": 15,
+      "short_segments": 0,
+      "files_processed": 12
+    },
+    "40degC": {
+      "raw_rows": 633784,
+      "dedup_rows": 63394,
+      "segments": 20,
+      "short_segments": 0,
+      "files_processed": 12
+    },
+    "n10degC": {
+      "raw_rows": 760583,
+      "dedup_rows": 75658,
+      "segments": 18,
+      "short_segments": 1,
+      "files_processed": 12
+    },
+    "n20degC": {
+      "raw_rows": 552049,
+      "dedup_rows": 55215,
+      "segments": 15,
+      "short_segments": 0,
+      "files_processed": 12
+    }
+  },
+  "split_window_counts": {
+    "train": {
+      "0degC": 5286,
+      "10degC": 5750,
+      "25degC": 6346,
+      "40degC": 4245,
+      "n10degC": 5107,
+      "n20degC": 3723
+    },
+    "val": {
+      "0degC": 618,
+      "10degC": 674,
+      "25degC": 789,
+      "40degC": 448,
+      "n10degC": 597,
+      "n20degC": 412
+    },
+    "test": {
+      "0degC": 1395,
+      "10degC": 1520,
+      "25degC": 1712,
+      "40degC": 1079,
+      "n10degC": 1342,
+      "n20degC": 962
+    }
+  },
+  "shapes": {
+    "X_train": [
+      30457,
+      100,
+      5
+    ],
+    "y_train": [
+      30457,
+      100
+    ],
+    "I_train": [
+      30457,
+      100
+    ],
+    "timestamp_train": [
+      30457,
+      100
+    ],
+    "X_val": [
+      3538,
+      100,
+      5
+    ],
+    "y_val": [
+      3538,
+      100
+    ],
+    "I_val": [
+      3538,
+      100
+    ],
+    "timestamp_val": [
+      3538,
+      100
+    ],
+    "X_test": [
+      8010,
+      100,
+      5
+    ],
+    "y_test": [
+      8010,
+      100
+    ],
+    "I_test": [
+      8010,
+      100
+    ],
+    "timestamp_test": [
+      8010,
+      100
+    ]
+  },
+  "verification": {
+    "train_val": 0,
+    "train_test": 0,
+    "val_test": 0,
+    "train_val_key": 0,
+    "train_test_key": 0,
+    "val_test_key": 0
+  }
+}

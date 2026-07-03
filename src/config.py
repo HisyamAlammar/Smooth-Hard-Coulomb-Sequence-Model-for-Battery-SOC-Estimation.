@@ -83,6 +83,26 @@ PVR_EPSILONS = [0.0, 0.0005, 0.001, 0.0025, 0.005, 0.01]
 # requires regenerating data/processed and retraining every model.
 LABEL_MODE = "legacy"
 
+# ── Dataset versioning (v5 campaign) ─────────────────────────────────
+# v4_legacy tensors stay untouched in data/processed/v4_scenario_*.
+# v5 variants live in data/processed/<variant>_scenario_* and differ ONLY in
+# label_mode / decimation_mode; window, stride, features, and scenario split
+# logic are identical to v4.
+DATASET_VERSION = "v4_legacy"          # default for legacy code paths
+# DECIMATION_MODE options:
+#   "first_sample"                : legacy — keep first raw sample per second
+#   "mean_per_second"             : V/I/T = intra-second mean (anti-aliased),
+#                                   Capacity = last sample (integral state)
+#   "integrated_current_per_second": I = intra-second mean (charge-preserving),
+#                                   V/T = first sample, Capacity = last
+DECIMATION_MODE = "first_sample"
+DATASET_VARIANTS = {
+    "v4_legacy": {"label_mode": "legacy",          "decimation_mode": "first_sample"},
+    "v5a":       {"label_mode": "ohmic_corrected", "decimation_mode": "first_sample"},
+    "v5b":       {"label_mode": "legacy",          "decimation_mode": "mean_per_second"},
+    "v5c":       {"label_mode": "ohmic_corrected", "decimation_mode": "mean_per_second"},
+}
+
 # Physics-Informed Scaling bounds for v3 (V_proxy replaces raw V_t)
 # V_proxy has a narrower, more stable range since Ohmic drop is removed
 PHYS_MIN_V3 = [2.5,  -20.0, -20.0, -2.0, -20.0]  # [V_proxy, I, T, dV_proxy/dt, dI/dt]
