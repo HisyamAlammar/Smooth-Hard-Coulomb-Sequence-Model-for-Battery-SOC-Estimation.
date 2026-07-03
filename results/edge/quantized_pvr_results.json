@@ -1,0 +1,48 @@
+{
+  "provenance": {
+    "timestamp": "2026-07-03T10:29:02",
+    "scenario": "scenario_A",
+    "split": "test",
+    "data_source": "data\\processed\\v4_scenario_A",
+    "checkpoint": "outputs/v7_final/hard_coulomb_lstm_scenario_A.pt",
+    "seed": 42,
+    "config": {
+      "current_threshold_A": 0.05,
+      "pvr_epsilons": [
+        0.0,
+        0.0005,
+        0.001,
+        0.0025,
+        0.005,
+        0.01
+      ],
+      "q_nominal_Ah": 3.0
+    },
+    "experiment": "quantized_pvr_check",
+    "n_windows_subset": 4096,
+    "subset_seed": 42,
+    "scope": "dynamic weight quantization only; NOT a full-integer deployment"
+  },
+  "fp32": {
+    "rmse_pct": 12.697441508625959,
+    "pvr_disch_eps0": 0.0
+  },
+  "dynamic_int8": {
+    "rmse_pct": 12.679244357670685,
+    "rmse_drift_pp": -0.018197150955273855,
+    "max_abs_output_diff": 0.04718285799026489,
+    "pvr_disch_eps0": 0.0
+  },
+  "uint8_trajectory_quant": {
+    "pvr_disch_eps0": 0.0,
+    "claim": "monotone elementwise quantization preserves sign-consistency"
+  },
+  "float16_accumulation": {
+    "pvr_disch_eps0": 0.0
+  },
+  "asymmetric_requant_counterexample": {
+    "inverts_order": true,
+    "detail": "a=0.50199, b=0.50189<a; per-timestep scales 0.004/0.0038 with zero-points 0/0 dequantize to 0.500000/0.501600",
+    "implication": "integer pipelines that requantize each timestep with independent scale/zero-point CAN create sign violations; deployment must use a single-scale accumulator (e.g. int32 Coulomb counter) for the SOC state"
+  }
+}

@@ -88,10 +88,12 @@ def main() -> None:
     ).astype(np.float32)
     pvr_f16 = pvr_metrics(acc, I, epsilons=(0.0,))
 
-    # 4. constructed counterexample: per-timestep asymmetric requantization
-    a, b = 0.500000, 0.499999  # b < a (discharging step)
-    scale_t0, zp_t0 = 0.004, 0        # timestep t-1 quantized with scale A
-    scale_t1, zp_t1 = 0.0039, 3       # timestep t quantized with scale B
+    # 4. constructed counterexample: per-timestep requantization with
+    # DIFFERENT scales. a rounds down by ~scale_a/2, b rounds up by ~scale_b/2,
+    # so the dequantized pair inverts even though b < a.
+    a, b = 0.50199, 0.50189  # b < a (discharging step)
+    scale_t0, zp_t0 = 0.0040, 0   # timestep t-1 quantizer
+    scale_t1, zp_t1 = 0.0038, 0   # timestep t quantizer
     qa = np.round(a / scale_t0) + zp_t0
     qb = np.round(b / scale_t1) + zp_t1
     deq_a, deq_b = (qa - zp_t0) * scale_t0, (qb - zp_t1) * scale_t1

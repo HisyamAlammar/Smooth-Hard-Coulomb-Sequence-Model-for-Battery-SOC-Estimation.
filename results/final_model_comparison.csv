@@ -1,0 +1,30 @@
+model,scenario,source,params,rmse_pct,mae_pct,maxe_pct,pvr_disch_eps0,pvr_disch_eps0.005,delta_ratio_disch,notes
+null_ocv_coulomb[oracle_qtemp],scenario_A,phase2,0,0.0268,0.0183,0.2779,0.0,0.0,1.0196,
+HC_LSTM_oracle_anchor(ref),scenario_A,phase4,54626,0.5379,0.2795,5.0462,0.0,0.0,,"diagnostic reference (true SOC at t=0), not deployable"
+HC_LSTM_recursive_infer,scenario_A,phase6,54626,9.2251,7.3136,31.1895,0.0,,,"carried-anchor stitched inference on production checkpoint; n20 RMSE 6.6815%, n20 MaxE 17.2547%"
+hard_coulomb_tcn,scenario_A,phase2,208546,11.4592,8.8299,46.7303,0.0,0.0,0.8462,
+HC_LSTM_anchor_last,scenario_A,phase6,54626,11.9744,,41.9321,0.0,0.0,,"mean of 3 seeds; rmse std 1.22, maxe std 7.27"
+hard_coulomb_lstm,scenario_A,phase2,54626,12.7107,9.8736,55.1126,0.0,0.0,0.718,
+EKF_ocv_rint[R=0.0001],scenario_A,phase8,0,13.0002,9.6489,99.048,30.2887,0.7585,,n20 RMSE 18.3959%
+EKF_ocv_rint[R=0.01],scenario_A,phase8,0,13.0212,9.6968,86.977,20.2647,0.7299,,n20 RMSE 18.3636%
+EKF_ocv_rint[R=0.0009],scenario_A,phase8,0,13.0344,9.668,93.6634,24.8047,0.7555,,n20 RMSE 18.4331%
+null_ocv_coulomb[ocv25_qnom],scenario_A,phase2,0,13.2436,9.7184,86.9666,0.0,0.0,0.8537,
+null_ocv_coulomb[ocv25_qtemp],scenario_A,phase2,0,13.3497,9.7987,86.9645,0.0,0.0,1.02,
+vanilla_lstm,scenario_A,phase2,53569,13.3712,10.4838,51.0242,49.9694,8.0524,20.0925,
+HC_LSTM_anchor_pooled,scenario_A,phase6,54626,14.86,,54.1146,0.0,0.0,,"mean of 3 seeds; rmse std 4.46, maxe std 10.82"
+null_ocv_coulomb[ocvT_qnom],scenario_A,phase2,0,19.2147,13.1263,93.8623,0.0,0.0,0.8532,
+null_ocv_coulomb[ocvT_qtemp],scenario_A,phase2,0,19.2823,13.2044,93.85,0.0,0.0,1.0197,
+vanilla_lstm+posthoc_clamp,scenario_A,phase2,53569,25.5561,21.7819,48.1584,0.0,0.0,0.5664,
+null_ocv_coulomb[oracle_qtemp],scenario_B,phase2,0,0.0238,0.0131,0.3639,0.0,0.0,1.0185,
+HC_LSTM_oracle_anchor(ref),scenario_B,phase4,54626,0.5396,0.2494,4.9014,0.0,0.0,,"diagnostic reference (true SOC at t=0), not deployable"
+EKF_ocv_rint[R=0.0001],scenario_B,phase8,0,7.0477,4.8197,94.7043,26.0787,0.2112,,n20 RMSE 12.8887%
+EKF_ocv_rint[R=0.0009],scenario_B,phase8,0,7.1148,4.8595,94.7043,18.9244,0.1998,,n20 RMSE 12.9923%
+EKF_ocv_rint[R=0.01],scenario_B,phase8,0,7.1425,4.8758,94.7043,15.0275,0.1893,,n20 RMSE 13.0304%
+vanilla_lstm,scenario_B,phase2,53569,7.2806,5.0326,48.7994,41.0552,2.7071,16.3031,
+null_ocv_coulomb[ocv25_qnom],scenario_B,phase2,0,7.5572,4.9554,94.7291,0.0,0.0,0.9022,
+null_ocv_coulomb[ocv25_qtemp],scenario_B,phase2,0,7.6009,4.9914,94.6942,0.0,0.0,1.0303,
+hard_coulomb_lstm,scenario_B,phase2,54626,8.5667,7.0079,34.9985,0.0,0.0,0.3807,
+hard_coulomb_tcn,scenario_B,phase2,208546,8.5828,5.917,39.4851,0.0,0.0,0.4432,
+null_ocv_coulomb[ocvT_qtemp],scenario_B,phase2,0,17.365,8.5735,100.0,0.0,0.0,1.0333,
+null_ocv_coulomb[ocvT_qnom],scenario_B,phase2,0,17.376,8.5429,100.0,0.0,0.0,0.9024,
+vanilla_lstm+posthoc_clamp,scenario_B,phase2,53569,24.6723,23.4528,48.7994,0.0,0.0,0.6004,

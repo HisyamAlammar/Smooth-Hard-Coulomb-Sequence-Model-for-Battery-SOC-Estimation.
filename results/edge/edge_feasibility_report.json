@@ -1,0 +1,53 @@
+{
+  "provenance": {
+    "timestamp": "2026-07-03T10:28:16",
+    "scenario": "scenario_A",
+    "split": "test",
+    "data_source": "data\\processed\\v4_scenario_A",
+    "checkpoint": "outputs/v7_final/hard_coulomb_lstm_scenario_A.pt",
+    "seed": 42,
+    "config": {
+      "current_threshold_A": 0.05,
+      "pvr_epsilons": [
+        0.0,
+        0.0005,
+        0.001,
+        0.0025,
+        0.005,
+        0.01
+      ],
+      "q_nominal_Ah": 3.0
+    },
+    "experiment": "edge_feasibility",
+    "status": "PARAMETER-LEVEL ESTIMATE ONLY -- no WCET/hardware validation performed"
+  },
+  "parameters": 54626,
+  "flash_bytes": {
+    "fp32": 218504,
+    "int8_weights_plus_fp_scales_approx": 56674
+  },
+  "macs": {
+    "per_timestep_stateful": 52512,
+    "anchor_head_once_per_window": 1040,
+    "per_window_full_recompute": 5252540,
+    "stream_1hz_stateful_macs_per_s": 52512,
+    "stream_1hz_sliding_window_macs_per_s": 5252540
+  },
+  "ram_bytes_estimate": {
+    "input_window_buffer_fp32": 2000,
+    "lstm_states_fp32": 1024,
+    "activation_scratch_fp32_approx": 2048
+  },
+  "architectural_deployment_constraints": [
+    "Constraint layer is non-causal within the window: [lo,hi] anchor remapping needs min/max of the full window cumsum -> streaming deployment must either buffer 100 s (anchor latency) or recompute the full window each second (per_window MACs/s).",
+    "Per-window re-anchoring produces output discontinuities between consecutive windows (no slew-rate analysis exists).",
+    "Phase 6 recursive inference removes re-anchoring but accumulates delta-path rate error at warm temperatures.",
+    "Sigmoid/tanh: 8 activations per timestep; CMSIS-NN LUT cost not measured."
+  ],
+  "nonclaims": [
+    "No WCET measurement",
+    "No hardware latency profile",
+    "No int8 full-integer deployment artifact",
+    "No RAM measurement on target"
+  ]
+}
