@@ -1,0 +1,1 @@
+z_lo = clamp(-min_t C_t, 0, 1),    z_hi = clamp(1 - max_t C_t, 0, 1)    (6)

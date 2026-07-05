@@ -1,0 +1,1 @@
+l_delta = f_delta(h) ∈ R^(B×100×1),    l_anchor = f_anchor(h[:, -1, :]) ∈ R^(B×1)    (2)

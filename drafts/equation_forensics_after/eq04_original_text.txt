@@ -1,0 +1,1 @@
+δ_t = -limit_t · σ(l_delta,t), if I_t < -τ;  +limit_t · σ(l_delta,t), if I_t > τ;  0, if |I_t| ≤ τ    (4)

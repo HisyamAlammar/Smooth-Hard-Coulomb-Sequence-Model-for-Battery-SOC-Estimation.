@@ -1,0 +1,135 @@
+{
+  "policy": "authentic CSV/JSON/NPY/checkpoint figures only; no SVG; no mock arrays; no training rerun",
+  "figures": [
+    {
+      "file": "figures\\authentic\\fig01_actual_udds_signals.png",
+      "sources": [
+        "data/raw/LG Dataset/LG_HG2_Original_Dataset/25degC/551_UDDS.csv",
+        "data/raw/LG Dataset/LG_HG2_Original_Dataset/n20degC/610_UDDS.csv",
+        "src/config.py",
+        "src/preprocessing_v4.py"
+      ]
+    },
+    {
+      "file": "figures\\authentic\\fig02_actual_training_curves.png",
+      "sources": [
+        "outputs\\v7_final\\logs\\training_log_hard_coulomb_lstm_scenario_A.csv",
+        "outputs\\v7_final\\logs\\training_log_hard_coulomb_lstm_scenario_B.csv",
+        "logs\\training_log_v5_coulomb_tcn_scenario_A.csv",
+        "logs\\training_log_v5_coulomb_tcn_scenario_B.csv"
+      ]
+    },
+    {
+      "file": "figures\\authentic\\fig03_actual_multiseed_rmse.png",
+      "sources": [
+        "results/v5/multiseed/multiseed_summary.csv",
+        "results/v5/final_v5_model_comparison.csv",
+        "results/v5/ekf_ecm/recursive_vs_ekf_comparison.csv"
+      ]
+    },
+    {
+      "file": "figures\\authentic\\fig04_actual_eta_calibration.png",
+      "sources": [
+        "results/v5/delta_calibration/eta_gamma_sweep.json"
+      ],
+      "provenance": {
+        "timestamp": "2026-07-03T15:59:57",
+        "git_commit": "3c4ba9bf429d42248217395f19865eff4d8653e4",
+        "dataset_version": "v5c",
+        "scenario": "scenario_A",
+        "seed": 42,
+        "checkpoint": "results\\v5\\headline_models\\checkpoints\\hard_coulomb_lstm_v5c_scenario_A_seed42.pt",
+        "note": "inference sweep uses fixed weights trained at eta=1.5"
+      }
+    },
+    {
+      "file": "figures\\authentic\\fig05_actual_subzero_trajectory.png",
+      "sources": [
+        "data/processed/v5c_scenario_A/X_test.npy",
+        "data/processed/v5c_scenario_A/y_test.npy",
+        "data/processed/v5c_scenario_A/I_unscaled_test.npy",
+        "data/processed/v5c_scenario_A/temp_labels_test.npy",
+        "data/processed/v5c_scenario_A/timestamp_key_test.npy",
+        "results/v5/headline_models/checkpoints/hard_coulomb_lstm_v5c_scenario_A_seed42.pt",
+        "results/v5/ekf_ecm/recursive_vs_ekf_comparison.csv"
+      ],
+      "window_index": 16832
+    }
+  ],
+  "validation": [
+    {
+      "file": "figures\\authentic\\fig01_actual_udds_signals.png",
+      "exists": true,
+      "bytes": 377486,
+      "width": 2130,
+      "height": 1230,
+      "pixel_std": 54.1061,
+      "blank": false,
+      "sources": [
+        "data/raw/LG Dataset/LG_HG2_Original_Dataset/25degC/551_UDDS.csv",
+        "data/raw/LG Dataset/LG_HG2_Original_Dataset/n20degC/610_UDDS.csv",
+        "src/config.py",
+        "src/preprocessing_v4.py"
+      ]
+    },
+    {
+      "file": "figures\\authentic\\fig02_actual_training_curves.png",
+      "exists": true,
+      "bytes": 196656,
+      "width": 2069,
+      "height": 1380,
+      "pixel_std": 34.3375,
+      "blank": false,
+      "sources": [
+        "outputs\\v7_final\\logs\\training_log_hard_coulomb_lstm_scenario_A.csv",
+        "outputs\\v7_final\\logs\\training_log_hard_coulomb_lstm_scenario_B.csv",
+        "logs\\training_log_v5_coulomb_tcn_scenario_A.csv",
+        "logs\\training_log_v5_coulomb_tcn_scenario_B.csv"
+      ]
+    },
+    {
+      "file": "figures\\authentic\\fig03_actual_multiseed_rmse.png",
+      "exists": true,
+      "bytes": 104691,
+      "width": 2010,
+      "height": 930,
+      "pixel_std": 59.7952,
+      "blank": false,
+      "sources": [
+        "results/v5/multiseed/multiseed_summary.csv",
+        "results/v5/final_v5_model_comparison.csv",
+        "results/v5/ekf_ecm/recursive_vs_ekf_comparison.csv"
+      ]
+    },
+    {
+      "file": "figures\\authentic\\fig04_actual_eta_calibration.png",
+      "exists": true,
+      "bytes": 137952,
+      "width": 1949,
+      "height": 990,
+      "pixel_std": 24.4293,
+      "blank": false,
+      "sources": [
+        "results/v5/delta_calibration/eta_gamma_sweep.json"
+      ]
+    },
+    {
+      "file": "figures\\authentic\\fig05_actual_subzero_trajectory.png",
+      "exists": true,
+      "bytes": 74839,
+      "width": 1980,
+      "height": 990,
+      "pixel_std": 27.4873,
+      "blank": false,
+      "sources": [
+        "data/processed/v5c_scenario_A/X_test.npy",
+        "data/processed/v5c_scenario_A/y_test.npy",
+        "data/processed/v5c_scenario_A/I_unscaled_test.npy",
+        "data/processed/v5c_scenario_A/temp_labels_test.npy",
+        "data/processed/v5c_scenario_A/timestamp_key_test.npy",
+        "results/v5/headline_models/checkpoints/hard_coulomb_lstm_v5c_scenario_A_seed42.pt",
+        "results/v5/ekf_ecm/recursive_vs_ekf_comparison.csv"
+      ]
+    }
+  ]
+}

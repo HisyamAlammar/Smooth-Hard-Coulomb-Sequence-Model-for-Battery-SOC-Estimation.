@@ -1,0 +1,1 @@
+SOC_anchor = z_lo + max(z_hi - z_lo, ε) · σ(l_anchor),    ε = 10^(-6)    (7)

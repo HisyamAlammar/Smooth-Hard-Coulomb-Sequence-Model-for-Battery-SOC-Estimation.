@@ -1,0 +1,41 @@
+{
+  "docx": "D:\\Tugas kuliah\\SEM 6\\PROYEK DATA MINING\\PENELITIAN\\Penelitian_SOC\\drafts\\JNTETI_SOC_Hard_Coulomb_Definitif_Final.docx",
+  "backup": "D:\\Tugas kuliah\\SEM 6\\PROYEK DATA MINING\\PENELITIAN\\Penelitian_SOC\\drafts\\JNTETI_SOC_Hard_Coulomb_Definitif_Final.before_equation_omml.docx",
+  "original_equation_text": {
+    "1": "(h, c) = LSTM(x),    x ∈ R^(B×100×5) → h ∈ R^(B×100×64)    (1)",
+    "2": "l_delta = f_delta(h) ∈ R^(B×100×1),    l_anchor = f_anchor(h[:, -1, :]) ∈ R^(B×1)    (2)",
+    "3": "limit_t = |I_t| · η · γ,    γ = Δt / (Q_nom · 3600) = 9,259 × 10^(-5) SOC/A/s    (3)",
+    "4": "δ_t = -limit_t · σ(l_delta,t), if I_t < -τ;  +limit_t · σ(l_delta,t), if I_t > τ;  0, if |I_t| ≤ τ    (4)",
+    "5": "C_t = Σ_(k=1)^t δ_k    (5)",
+    "6": "z_lo = clamp(-min_t C_t, 0, 1),    z_hi = clamp(1 - max_t C_t, 0, 1)    (6)",
+    "7": "SOC_anchor = z_lo + max(z_hi - z_lo, ε) · σ(l_anchor),    ε = 10^(-6)    (7)",
+    "8": "SOC_hat,t = SOC_anchor + C_t,    for all t ∈ 1, ..., T    (8)",
+    "9": "limit*_t = |I_t| · η* · γ,    η* = 2,0    (9)",
+    "10": "r_Δ = mean(|Δs_hat|) / mean(|Δs|) ≈ 1,0 pada η* = 2,0    (10)",
+    "11": "RMSE = sqrt((1 / (N · T)) · Σ_(n,t)(y_n,t - y_hat,n,t)^2) × 100%    (11)",
+    "12": "PVR_dis = (Σ_t 1(I_t < -τ) · 1(Δy_hat,t > 0)) / (Σ_t 1(I_t < -τ))    (12)"
+  },
+  "before_invariants": {
+    "title_id": true,
+    "title_en": true,
+    "heading_dataset": true,
+    "heading_arch": true,
+    "fairness": true,
+    "placeholder_email": true,
+    "placeholder_dates": true,
+    "placeholder_supervisor": true,
+    "doi_count": "23"
+  },
+  "after_invariants": {
+    "title_id": true,
+    "title_en": true,
+    "heading_dataset": true,
+    "heading_arch": true,
+    "fairness": true,
+    "placeholder_email": true,
+    "placeholder_dates": true,
+    "placeholder_supervisor": true,
+    "doi_count": "23"
+  },
+  "invariants_unchanged": true
+}

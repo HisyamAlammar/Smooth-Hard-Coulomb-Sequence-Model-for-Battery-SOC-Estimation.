@@ -59,7 +59,8 @@ def _read_json(rel: str):
 def _save_figure(fig, stem: str, dpi: int = 600):
     FIG_DIR.mkdir(parents=True, exist_ok=True)
     paths = {}
-    for ext in ("png", "pdf", "svg"):
+    # Empirical remediation policy: SVG export disabled for manuscript assets.
+    for ext in ("png", "pdf"):
         path = FIG_DIR / f"{stem}.{ext}"
         fig.savefig(path, dpi=dpi if ext == "png" else None, bbox_inches="tight")
         paths[ext] = path
@@ -328,7 +329,7 @@ def write_manifests(validation: dict | None = None):
     for stem, nb, src, msg, placement, width, caveat in FIGURE_MANIFEST:
         fig_entries.append({
             "asset_filename": f"outputs/figures/{stem}.png",
-            "archive_files": [f"outputs/figures/{stem}.pdf", f"outputs/figures/{stem}.svg"],
+            "archive_files": [f"outputs/figures/{stem}.pdf"],
             "source_notebook": f"notebooks/ablation_studies_v5_final/{nb}",
             "source_data_file": src,
             "scientific_message": msg,
@@ -377,7 +378,7 @@ def write_manifests(validation: dict | None = None):
     report.append("## Caveats")
     report.append("- Recursive, eta, and EKF assets use Scenario A seed 42 deployment-style evidence as documented in v5 reports.")
     report.append("- Figure captions are intentionally not embedded in images; use manuscript captions.")
-    report.append("- PDF/SVG archives are exported for every required figure.")
+    report.append("- PDF archives are exported for every required figure; SVG export is disabled by empirical-only policy.")
     (ASSET_DIR / "asset_export_report.md").write_text("\n".join(report) + "\n", encoding="utf-8")
 
 

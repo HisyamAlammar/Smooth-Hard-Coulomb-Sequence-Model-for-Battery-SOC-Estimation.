@@ -1,0 +1,176 @@
+{
+  "policy": "publication-ready figures generated only from verified CSV/JSON/NPY/checkpoint artifacts",
+  "figures": [
+    {
+      "id": "fig01",
+      "files": {
+        "png": "figures\\publication_ready\\fig01_money_raw_udds_signals.png",
+        "pdf": "figures\\publication_ready\\fig01_money_raw_udds_signals.pdf"
+      },
+      "sources": [
+        "data/raw/LG Dataset/LG_HG2_Original_Dataset/25degC/551_UDDS.csv",
+        "data/raw/LG Dataset/LG_HG2_Original_Dataset/n20degC/610_UDDS.csv",
+        "src/config.py",
+        "src/preprocessing_v4.py"
+      ],
+      "message": "Raw UDDS voltage, current, and SOC contrast at 25 \u00b0C and \u221220 \u00b0C."
+    },
+    {
+      "id": "fig02",
+      "files": {
+        "png": "figures\\publication_ready\\fig02_money_training_validation_loss.png",
+        "pdf": "figures\\publication_ready\\fig02_money_training_validation_loss.pdf"
+      },
+      "sources": [
+        "outputs\\v7_final\\logs\\training_log_hard_coulomb_lstm_scenario_A.csv",
+        "outputs\\v7_final\\logs\\training_log_hard_coulomb_lstm_scenario_B.csv",
+        "logs\\training_log_v5_coulomb_tcn_scenario_A.csv",
+        "logs\\training_log_v5_coulomb_tcn_scenario_B.csv"
+      ],
+      "message": "Training and validation loss convergence from stored experiment logs."
+    },
+    {
+      "id": "fig03",
+      "files": {
+        "png": "figures\\publication_ready\\fig03_money_multiseed_rmse.png",
+        "pdf": "figures\\publication_ready\\fig03_money_multiseed_rmse.pdf"
+      },
+      "sources": [
+        "results/v5/multiseed/multiseed_summary.csv",
+        "results/v5/final_v5_model_comparison.csv",
+        "results/v5/ekf_ecm/recursive_vs_ekf_comparison.csv"
+      ],
+      "message": "Scenario A RMSE comparison with stored multi-seed standard deviation where available."
+    },
+    {
+      "id": "fig04",
+      "files": {
+        "png": "figures\\publication_ready\\fig04_money_eta_calibration_sweep.png",
+        "pdf": "figures\\publication_ready\\fig04_money_eta_calibration_sweep.pdf"
+      },
+      "sources": [
+        "results/v5/delta_calibration/eta_gamma_sweep.json"
+      ],
+      "provenance": {
+        "timestamp": "2026-07-03T15:59:57",
+        "git_commit": "3c4ba9bf429d42248217395f19865eff4d8653e4",
+        "dataset_version": "v5c",
+        "scenario": "scenario_A",
+        "seed": 42,
+        "checkpoint": "results\\v5\\headline_models\\checkpoints\\hard_coulomb_lstm_v5c_scenario_A_seed42.pt",
+        "note": "inference sweep uses fixed weights trained at eta=1.5"
+      },
+      "message": "Eta*=2.0 jointly minimizes recursive RMSE and restores delta ratio near 1."
+    },
+    {
+      "id": "fig05",
+      "files": {
+        "png": "figures\\publication_ready\\fig05_money_subzero_trajectory_zoom.png",
+        "pdf": "figures\\publication_ready\\fig05_money_subzero_trajectory_zoom.pdf"
+      },
+      "sources": [
+        "data/processed/v5c_scenario_A/X_test.npy",
+        "data/processed/v5c_scenario_A/y_test.npy",
+        "data/processed/v5c_scenario_A/I_unscaled_test.npy",
+        "data/processed/v5c_scenario_A/temp_labels_test.npy",
+        "data/processed/v5c_scenario_A/timestamp_key_test.npy",
+        "results/v5/headline_models/checkpoints/hard_coulomb_lstm_v5c_scenario_A_seed42.pt",
+        "results/v5/ekf_ecm/recursive_vs_ekf_comparison.csv"
+      ],
+      "window_index": 16832,
+      "message": "Sub-zero trajectory comparison generated from checkpoint inference and EKF reconstruction."
+    }
+  ],
+  "validation": [
+    {
+      "figure": "fig01",
+      "kind": "png",
+      "file": "figures\\publication_ready\\fig01_money_raw_udds_signals.png",
+      "exists": true,
+      "bytes": 626008,
+      "width": 2947,
+      "height": 1741,
+      "pixel_std": 56.0155,
+      "blank": false
+    },
+    {
+      "figure": "fig01",
+      "kind": "pdf",
+      "file": "figures\\publication_ready\\fig01_money_raw_udds_signals.pdf",
+      "exists": true,
+      "bytes": 80952
+    },
+    {
+      "figure": "fig02",
+      "kind": "png",
+      "file": "figures\\publication_ready\\fig02_money_training_validation_loss.png",
+      "exists": true,
+      "bytes": 320036,
+      "width": 2950,
+      "height": 1748,
+      "pixel_std": 32.2597,
+      "blank": false
+    },
+    {
+      "figure": "fig02",
+      "kind": "pdf",
+      "file": "figures\\publication_ready\\fig02_money_training_validation_loss.pdf",
+      "exists": true,
+      "bytes": 24560
+    },
+    {
+      "figure": "fig03",
+      "kind": "png",
+      "file": "figures\\publication_ready\\fig03_money_multiseed_rmse.png",
+      "exists": true,
+      "bytes": 100772,
+      "width": 2072,
+      "height": 1309,
+      "pixel_std": 73.9827,
+      "blank": false
+    },
+    {
+      "figure": "fig03",
+      "kind": "pdf",
+      "file": "figures\\publication_ready\\fig03_money_multiseed_rmse.pdf",
+      "exists": true,
+      "bytes": 25421
+    },
+    {
+      "figure": "fig04",
+      "kind": "png",
+      "file": "figures\\publication_ready\\fig04_money_eta_calibration_sweep.png",
+      "exists": true,
+      "bytes": 193355,
+      "width": 2364,
+      "height": 1306,
+      "pixel_std": 26.682,
+      "blank": false
+    },
+    {
+      "figure": "fig04",
+      "kind": "pdf",
+      "file": "figures\\publication_ready\\fig04_money_eta_calibration_sweep.pdf",
+      "exists": true,
+      "bytes": 24330
+    },
+    {
+      "figure": "fig05",
+      "kind": "png",
+      "file": "figures\\publication_ready\\fig05_money_subzero_trajectory_zoom.png",
+      "exists": true,
+      "bytes": 107668,
+      "width": 2372,
+      "height": 1168,
+      "pixel_std": 30.1759,
+      "blank": false
+    },
+    {
+      "figure": "fig05",
+      "kind": "pdf",
+      "file": "figures\\publication_ready\\fig05_money_subzero_trajectory_zoom.pdf",
+      "exists": true,
+      "bytes": 22078
+    }
+  ]
+}

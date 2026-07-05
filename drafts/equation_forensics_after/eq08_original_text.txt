@@ -1,0 +1,1 @@
+SOC_hat,t = SOC_anchor + C_t,    for all t ∈ 1, ..., T    (8)
